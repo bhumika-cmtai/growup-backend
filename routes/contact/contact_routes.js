@@ -52,23 +52,6 @@ router.get('/getContact/:id', async (req, res) => {
 // Update a contact by ID
 router.put('/updateContact/:id', async (req, res) => {
     try {
-      // Extract fields from the request body
-      if (!req.body.name) {
-        return ResponseManager.handleBadRequestError(res, 'Name is required');
-      }
-  
-      if (!req.body.email) {
-        return ResponseManager.handleBadRequestError(res, 'Email is required');
-      }
-
-      if (!req.body.phoneNumber) {
-        return ResponseManager.handleBadRequestError(res, 'Primary phone is required');
-      }
-  
-      if (!req.body.message) {
-        return ResponseManager.handleBadRequestError(res, 'message is required');
-      }
-  
   
       // Update the contact if all required fields are present
       const contact = await ContactService.updateContact(req.params.id, req.body);
@@ -129,6 +112,27 @@ router.get('/getAllContact', async (req, res) => {
   }
 });
 
+router.get('/getContactsCount', async (req, res) => {
+  try {
+    const count = await ContactService.getNumberOfContacts();
+
+    return ResponseManager.sendSuccess(
+      res, 
+      { count: count }, 
+      200, 
+      'contacts count retrieved successfully'
+    );
+  } catch (err) {
+    // Use the managers you already have for logging and sending errors
+    consoleManager.error(`Error in /getContactsCount route: ${err.message}`);
+    return ResponseManager.sendError(
+      res, 
+      500, 
+      'INTERNAL_ERROR', 
+      'Error fetching contact count'
+    );
+  }
+})
 
 // // Toggle contact status
 // router.put('/removeContact/:id', async (req, res) => {

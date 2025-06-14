@@ -21,6 +21,16 @@ const ContactSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
+  status: {
+    type: String,
+    enum: ['New', 'Contacted', 'NotInterested'],
+    default: 'Active',
+    required: false 
+  },
+  reason: {
+    type: String,
+    required: false 
+  }
 });
 
 const Contact = mongoose.model('Contact', ContactSchema);

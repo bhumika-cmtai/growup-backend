@@ -155,17 +155,40 @@ router.get('/getAllLeads', async (req, res) => {
 
 
 // Toggle lead status
-router.put('/removeLead/:id', async (req, res) => {
+// router.put('/removeLead/:id', async (req, res) => {
+//   try {
+//     const lead = await LeadService.toggleLeadStatus(req.params.id);
+//     if (lead) {
+//       ResponseManager.sendSuccess(res, lead, 200, 'lead status updated successfully');
+//     } else {
+//       ResponseManager.sendSuccess(res, [], 200, 'lead not found for status toggle');
+//     }
+//   } catch (err) {
+//     ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error toggling lead status');
+//   }
+// });
+
+router.get('/getLeadsCount', async (req, res) => {
   try {
-    const lead = await LeadService.toggleLeadStatus(req.params.id);
-    if (lead) {
-      ResponseManager.sendSuccess(res, lead, 200, 'lead status updated successfully');
-    } else {
-      ResponseManager.sendSuccess(res, [], 200, 'lead not found for status toggle');
-    }
+    const count = await LeadService.getNumberOfLeads();
+
+    return ResponseManager.sendSuccess(
+      res, 
+      { count: count }, 
+      200, 
+      'Lead count retrieved successfully'
+    );
   } catch (err) {
-    ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error toggling lead status');
+    // Use the managers you already have for logging and sending errors
+    consoleManager.error(`Error in /getLeadsCount route: ${err.message}`);
+    return ResponseManager.sendError(
+      res, 
+      500, 
+      'INTERNAL_ERROR', 
+      'Error fetching lead count'
+    );
   }
 });
+
 
 export default router;
