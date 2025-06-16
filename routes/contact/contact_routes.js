@@ -76,7 +76,7 @@ router.get('/getAllContact', async (req, res) => {
     return ResponseManager.sendSuccess(
       res, 
       {
-        contact: result.contacts,
+        contacts: result.contacts,
         totalPages: result.totalPages,
         currentPage: result.currentPage,
         totalContacts: result.totalContacts
