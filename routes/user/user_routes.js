@@ -83,12 +83,14 @@ router.put('/updateUser/:id', async (req, res) => {
     try {
       // Update the user if all required fields are present
       const user = await UserService.updateUser(req.params.id, req.body);
+      console.log(user)
       if (user) {
         return ResponseManager.sendSuccess(res, user, 200, 'User updated successfully');
       } else {
         return ResponseManager.sendSuccess(res, [], 200, 'User not found for update');
       }
     } catch (err) {
+      console.log(err)
       return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error updating user');
     }
   });

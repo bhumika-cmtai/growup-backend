@@ -65,6 +65,7 @@ class UserService {
     try {
       data.updatedOn = Date.now();
       const user = await User.findByIdAndUpdate(userId, data, { new: true });
+      console.log(user)
       if (!user) {
         consoleManager.error("User not found for update");
         return null;

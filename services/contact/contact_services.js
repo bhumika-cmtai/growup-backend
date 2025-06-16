@@ -86,7 +86,7 @@ class ContactService {
         contacts, 
         totalPages, 
         currentPage: parseInt(page, 10), 
-        totalPages
+        totalContacts
       };
     } catch (err) {
       consoleManager.error(`Error fetching contacts: ${err.message}`);
