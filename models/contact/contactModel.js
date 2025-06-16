@@ -24,7 +24,7 @@ const ContactSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['New', 'Contacted', 'NotInterested'],
-    default: 'Active',
+    default: 'New',
     required: false 
   },
   reason: {

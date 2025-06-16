@@ -1,2 +1,170 @@
 user Routes - 
-1. Add user: /v1/user/addUser
+1. POST Add user: /v1/user/addUser 
+    RESPONSE: {
+    "statusCode": 201,
+    "message": "User created successfully",
+    "data": {
+        "name": "nisha",
+        "email": "nisha@gmail.com",
+        "password": "1234",
+        "phoneNumber": "989846983",
+        "role": "sales",
+        "createdOn": "1749905640573",
+        "updatedOn": "1749905640573",
+        "_id": "684d70e8bd51a898c5e144be",
+        "__v": 0
+    },
+    "errorCode": "NO",
+    "errorMessage": ""
+}
+
+2. POST Add many user: /v1/user/addManyUser (csv/excel)
+
+3. GET get user by id: /v1/user/getUser/:id
+    RESPONSE: {
+    "statusCode": 200,
+    "message": "User retrieved successfully",
+    "data": {
+        "_id": "684d70e8bd51a898c5e144be",
+        "name": "nisha",
+        "email": "nisha@gmail.com",
+        "password": "1234",
+        "phoneNumber": "989846983",
+        "role": "sales",
+        "createdOn": "1749905640573",
+        "updatedOn": "1749905640573",
+        "__v": 0
+    },
+    "errorCode": "NO",
+    "errorMessage": ""
+}
+
+4. PUT update user: /v1/user/updateUser/:id
+    RESPONSE: {
+    "statusCode": 200,
+    "message": "User updated successfully",
+    "data": {
+        "_id": "684d70e8bd51a898c5e144be",
+        "name": "nisha",
+        "email": "nisha@gmail.com",
+        "password": "1234",
+        "phoneNumber": "989846983",
+        "role": "developer",
+        "createdOn": "1749905640573",
+        "updatedOn": "1749905901720",
+        "__v": 0
+    },
+    "errorCode": "NO",
+    "errorMessage": ""
+}
+
+    
+5. DELETE delete user by id: /v1/user/deleteUser/:id
+    DELETE: {
+    "statusCode": 200,
+    "message": "User deleted successfully",
+    "data": {
+        "_id": "684d22aca90a7246f1115cad",
+        "name": "bhumika",
+        "email": "bhumi@gmail.com",
+        "password": "1235",
+        "phoneNumber": "8898779889",
+        "role": "sales",
+        "status": "New",
+        "createdOn": "1749885612846",
+        "updatedOn": "1749885961882",
+        "__v": 0
+    },
+    "errorCode": "NO",
+    "errorMessage": ""
+}
+
+6. GET get all users (pagination): /v1/user/getAllUsers
+    REQUEST: const { name, email, page = 1, limit = 20 } = req.query;  
+    RESPONSE: {
+    "statusCode": 200,
+    "message": "Users retrieved successfully",
+    "data": {
+        "users": [
+            {
+                "_id": "684d1d03c0ad75f22388d0a8",
+                "name": "bhumika",
+                "email": "bhumika@gmail.com",
+                "password": "123",
+                "phoneNumber": "8898779889",
+                "role": "sales",
+                "status": "New",
+                "createdOn": "1749884163786",
+                "updatedOn": "1749884163786",
+                "__v": 0
+            },
+            {
+                "_id": "684d22aca90a7246f1115cae",
+                "name": "madhvi",
+                "email": "madhvi@gmail.com",
+                "password": "000",
+                "phoneNumber": "74787698",
+                "role": "sales",
+                "status": "New",
+                "createdOn": "1749885612846",
+                "updatedOn": "1749885612846",
+                "__v": 0
+            },
+            {
+                "_id": "684d70e8bd51a898c5e144be",
+                "name": "nisha",
+                "email": "nisha@gmail.com",
+                "password": "1234",
+                "phoneNumber": "989846983",
+                "role": "developer",
+                "createdOn": "1749905640573",
+                "updatedOn": "1749905901720",
+                "__v": 0
+            }
+        ],
+        "totalPages": 1,
+        "currentPage": 1,
+        "totalUsers": 3
+    },
+    "errorCode": "NO",
+    "errorMessage": ""
+}
+
+ /v1/removeUser/:id ?
+
+
+
+lead route - 
+1. POST add leads: /v1/lead/addLead
+2. POST add many leads: /v1/lead/addManyLead
+3. GET get leads: /v1/lead/getLead/:id
+4. PUT update lead: /v1/lead/updateLead/:id
+5. DELETE delete lead: /v1/lead/deleteLead/:id
+6. GET get all leads (pagination): /v1/lead/getAllLeads
+7. GET get leads count /v1/lead/getLeadsCount
+
+contact route - 
+1. POST add contact /v1/contact/addContact
+   RESPONSE:         {
+    "statusCode": 201,
+    "message": "contact created successfully",
+    "data": {
+        "name": "deepa",
+        "email": "deepa@gmail.com",
+        "phoneNumber": "98987988",
+        "message": "hey helo",
+        "createdOn": "1749903799575",
+        "status": "New",
+        "_id": "684d69b7912350e0d7984ca1",
+        "__v": 0
+    },
+    "errorCode": "NO",
+    "errorMessage": ""
+}
+2. GET get contact by id /v1/contact/getContact/:id
+    RESPONSE: 
+3. PUT update contact  /v1/contact/updateContact/:id
+4. DELETE delete user by id /v1/contact/deleteContact/:id
+5. GET get all contacts  /v1/contact/getAllContact
+6. GET get count of contact /v1/contact/getContactsCount
+

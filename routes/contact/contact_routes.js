@@ -8,24 +8,7 @@ const router = express.Router();
 // Create a new user
 router.post('/addContact', async (req, res) => {
     try {
-      // Extract fields from the request body
-      if (!req.body.name) {
-        return ResponseManager.handleBadRequestError(res, 'Name is required');
-      }
-  
-      if (!req.body.email) {
-        return ResponseManager.handleBadRequestError(res, 'Email is required');
-      }
-      
-  
-      if (!req.body.phoneNumber) {
-        return ResponseManager.handleBadRequestError(res, 'Primary phone is required');
-      }
-      if (!req.body.message) {
-        return ResponseManager.handleBadRequestError(res, 'message is required');
-      }
-
-  
+      // Extract fields from the request body  
       // Create the contact if all required fields are present
       const contact = await ContactService.createContact(req.body);
       return ResponseManager.sendSuccess(res, contact, 201, 'contact created successfully');

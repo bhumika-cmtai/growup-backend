@@ -34,10 +34,6 @@ router.post('/addUser', async (req, res) => {
         return ResponseManager.handleBadRequestError(res, 'Role is required');
       }
   
-      if (!req.body.status) {
-        return ResponseManager.handleBadRequestError(res, 'Status is required');
-      }
-  
       // Create the user if all required fields are present
       const user = await UserService.createUser(req.body);
       return ResponseManager.sendSuccess(res, user, 201, 'User created successfully');
@@ -85,32 +81,6 @@ router.get('/getUser/:id', async (req, res) => {
 // Update a user by ID
 router.put('/updateUser/:id', async (req, res) => {
     try {
-      // Extract fields from the request body
-      if (!req.body.name) {
-        return ResponseManager.handleBadRequestError(res, 'Name is required');
-      }
-  
-      if (!req.body.email) {
-        return ResponseManager.handleBadRequestError(res, 'Email is required');
-      }
-
-      if (!req.body.password) {
-        return ResponseManager.handleBadRequestError(res, 'Password is required');
-      }
-
-      if (!req.body.phoneNumber) {
-        return ResponseManager.handleBadRequestError(res, 'Primary phone is required');
-      }
-  
-      if (!req.body.role) {
-        return ResponseManager.handleBadRequestError(res, 'Role is required');
-      }
-  
-      if (!req.body.status) {
-        return ResponseManager.handleBadRequestError(res, 'Status is required');
-      }
-  
-  
       // Update the user if all required fields are present
       const user = await UserService.updateUser(req.params.id, req.body);
       if (user) {
@@ -172,17 +142,17 @@ router.get('/getAllUsers', async (req, res) => {
 
 
 // Toggle user status
-router.put('/removeUser/:id', async (req, res) => {
-  try {
-    const user = await UserService.toggleUserStatus(req.params.id);
-    if (user) {
-      ResponseManager.sendSuccess(res, user, 200, 'User status updated successfully');
-    } else {
-      ResponseManager.sendSuccess(res, [], 200, 'User not found for status toggle');
-    }
-  } catch (err) {
-    ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error toggling user status');
-  }
-});
+// router.put('/removeUser/:id', async (req, res) => {
+//   try {
+//     const user = await UserService.toggleUserStatus(req.params.id);
+//     if (user) {
+//       ResponseManager.sendSuccess(res, user, 200, 'User status updated successfully');
+//     } else {
+//       ResponseManager.sendSuccess(res, [], 200, 'User not found for status toggle');
+//     }
+//   } catch (err) {
+//     ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error toggling user status');
+//   }
+// });
 
 export default router;
