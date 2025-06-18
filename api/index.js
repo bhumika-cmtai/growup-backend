@@ -51,9 +51,9 @@ import contactRoute from "../routes/contact/contact_routes.js"
 
 // app.use("/v2/auth", loginRoute);
 // app.use("/v2/get", profileRoute);
-app.use("/v1/user", userRoute);
-app.use("/v1/lead", leadRoute);
-app.use("/v1/contact", contactRoute);
+app.use("/v1/users", userRoute);
+app.use("/v1/leads", leadRoute);
+app.use("/v1/contacts", contactRoute);
 
 // app.use("/v2/role", roleRoute);
 

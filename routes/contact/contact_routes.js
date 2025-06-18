@@ -8,8 +8,6 @@ const router = express.Router();
 // Create a new user
 router.post('/addContact', async (req, res) => {
     try {
-      // Extract fields from the request body  
-      // Create the contact if all required fields are present
       const contact = await ContactService.createContact(req.body);
       return ResponseManager.sendSuccess(res, contact, 201, 'contact created successfully');
     } catch (err) {
@@ -36,7 +34,6 @@ router.get('/getContact/:id', async (req, res) => {
 router.put('/updateContact/:id', async (req, res) => {
     try {
   
-      // Update the contact if all required fields are present
       const contact = await ContactService.updateContact(req.params.id, req.body);
       if (contact) {
         return ResponseManager.sendSuccess(res, contact, 200, 'contact updated successfully');
