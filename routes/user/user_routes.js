@@ -112,8 +112,9 @@ router.delete('/deleteUser/:id', async (req, res) => {
 // Get all users
 router.get('/getAllUsers', async (req, res) => {
   try {
-    const { name, email, page = 1, limit = 20 } = req.query;
-    const result = await UserService.getAllUsers({ name, email }, page, limit);
+   const { searchQuery, page = 1, limit = 20 } = req.query;
+
+    const result = await UserService.getAllUsers(searchQuery, page, limit);
 
     if(result.length==0 || !result){
       return ResponseManager.sendSuccess(res, [], 200, 'No users found');
