@@ -62,8 +62,8 @@ router.delete('/deleteContact/:id', async (req, res) => {
 // Get all contact
 router.get('/getAllContact', async (req, res) => {
   try {
-    const { name, email, page = 1, limit = 20 } = req.query;
-    const result = await ContactService.getAllContacts({ name, email }, page, limit);
+    const { searchQuery, page = 1, limit = 20 } = req.query;
+    const result = await ContactService.getAllContacts(searchQuery, page, limit);
 
     if(result.length==0 || !result){
       return ResponseManager.sendSuccess(res, [], 200, 'No contact found');

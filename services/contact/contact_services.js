@@ -66,12 +66,14 @@ class ContactService {
     try {
       // Build the query object for filtering
       const filterQuery = {};
-      if (query.name) {
-        filterQuery.name = { $regex: query.name, $options: 'i' }; 
-      }
-      if (query.email) {
-        filterQuery.email = { $regex: query.email, $options: 'i' };
-      }
+      
+      if (searchQuery) {
+      const regex = { $regex: searchQuery, $options: 'i' };
+      filterQuery.$or = [
+        { name: regex },
+        { email: regex }
+      ];
+    }
   
       // Fetch contacts with pagination
       const contacts = await Contact.find(filterQuery)
@@ -95,29 +97,6 @@ class ContactService {
   }
   
 
-//   async toggleLeadStatus(leadId) {
-//     try {
-//       const lead = await Lead.findById(leadId);
-//       if (!lead) {
-//         consoleManager.error("Lead not found for status toggle");
-//         return null;
-//       }
-
-//       // Toggle the status between 'active' and 'inactive'
-//       const newStatus = lead.status === "Active" ? "Inactive" : "Active";
-//       const updatedLead = await Lead.findByIdAndUpdate(
-//         leadId,
-//         { status: newStatus, updatedOn: Date.now() },
-//         { new: true }
-//       );
-
-//       consoleManager.log(`Lead status updated to ${newStatus}`);
-//       return updatedLead;
-//     } catch (err) {
-//       consoleManager.error(`Error toggling lead status: ${err.message}`);
-//       throw err;
-//     }
-//   }
 
   async getNumberOfContacts() {
     try {
