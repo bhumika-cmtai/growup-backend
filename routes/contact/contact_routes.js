@@ -65,10 +65,6 @@ router.get('/getAllContact', async (req, res) => {
     const { searchQuery, page = 1, limit = 20 } = req.query;
     const result = await ContactService.getAllContacts(searchQuery, page, limit);
 
-    if(result.length==0 || !result){
-      return ResponseManager.sendSuccess(res, [], 200, 'No contact found');
-    }
-
     // Format the response as needed
     return ResponseManager.sendSuccess(
       res, 
