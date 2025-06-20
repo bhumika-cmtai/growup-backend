@@ -90,16 +90,18 @@ class LeadService {
     }
   }
 
-  async getAllLeads(query = {}, page = 1, limit = 20) {
+  async getAllLeads(searchQuery = '', page = 1, limit = 20) {
     try {
       // Build the query object for filtering
       const filterQuery = {};
-      if (query.name) {
-        filterQuery.name = { $regex: query.name, $options: 'i' }; 
-      }
-      if (query.email) {
-        filterQuery.email = { $regex: query.email, $options: 'i' };
-      }
+      
+      if (searchQuery) {
+      const regex = { $regex: searchQuery, $options: 'i' };
+      filterQuery.$or = [
+        { name: regex },
+        { email: regex }
+      ];
+    }
   
       // Fetch leads with pagination
       const leads = await Lead.find(filterQuery)

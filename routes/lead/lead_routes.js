@@ -123,8 +123,8 @@ router.delete('/deleteLead/:id', async (req, res) => {
 // Get all leads
 router.get('/getAllLeads', async (req, res) => {
   try {
-    const { name, email, page = 1, limit = 20 } = req.query;
-    const result = await LeadService.getAllLeads({ name, email }, page, limit);
+    const {searchQuery, page = 1, limit = 20 } = req.query;
+    const result = await LeadService.getAllLeads(searchQuery, page, limit);
 
     if(result.length==0 || !result){
       return ResponseManager.sendSuccess(res, [], 200, 'No leads found');
