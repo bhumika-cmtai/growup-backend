@@ -93,7 +93,7 @@ class UserService {
     }
   }
 
-  async getAllUsers(searchQuery = '', page = 1, limit = 20) {
+  async getAllUsers(searchQuery = '', status , page = 1, limit = 20) {
   try {
     const filterQuery = {};
 
@@ -104,6 +104,9 @@ class UserService {
         { email: regex }
       ];
     }
+    if (status) {
+        filterQuery.status = status;
+      }
   
       // Fetch users with pagination
       const users = await User.find(filterQuery)
