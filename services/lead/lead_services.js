@@ -90,7 +90,7 @@ class LeadService {
     }
   }
 
-  async getAllLeads(searchQuery = '', page = 1, limit = 20) {
+  async getAllLeads(searchQuery = '',status ,page = 1, limit = 20) {
     try {
       // Build the query object for filtering
       const filterQuery = {};
@@ -102,7 +102,9 @@ class LeadService {
         { email: regex }
       ];
     }
-  
+  if (status) {
+        filterQuery.status = status;
+      }
       // Fetch leads with pagination
       const leads = await Lead.find(filterQuery)
         .limit(parseInt(limit, 10))
