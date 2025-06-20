@@ -13,6 +13,10 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
+  source: {
+    type:String,
+    required: false
+  },
   status: {
     type: String,
     enum: ['New', 'Contacted', 'NotInterested'],
@@ -26,6 +30,10 @@ const leadSchema = new mongoose.Schema({
   updatedOn: {
     type: String,
     required: false 
+  },
+  message: {
+    type:String,
+    required: false
   },
   reason: {
     type: String,
