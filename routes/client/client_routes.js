@@ -62,8 +62,8 @@ router.delete('/deleteClient/:id', async (req, res) => {
 // Get all client
 router.get('/getAllClient', async (req, res) => {
   try {
-    const { searchQuery, page = 1, limit = 8 } = req.query;
-    const result = await ClientService.getAllClients(searchQuery, page, limit);
+    const { searchQuery, status, page = 1, limit = 8 } = req.query;
+    const result = await ClientService.getAllClients(searchQuery, status, page, limit);
 
     // Format the response as needed
     return ResponseManager.sendSuccess(

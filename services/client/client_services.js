@@ -62,7 +62,7 @@ class ClientService {
     }
   }
 
-  async getAllClients(searchQuery = '', page = 1, limit = 8) {
+  async getAllClients(searchQuery = '',status, page = 1, limit = 8) {
     try {
       // Build the query object for filtering
       const filterQuery = {};
@@ -74,7 +74,9 @@ class ClientService {
         { email: regex }
       ];
     }
-  
+  if (status) {
+        filterQuery.status = status;
+      }
       // Fetch clients with pagination
       const clients = await Client.find(filterQuery)
         .limit(parseInt(limit, 10))
