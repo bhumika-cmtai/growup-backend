@@ -45,7 +45,7 @@ import userRoute from "../routes/user/user_routes.js"
 import leadRoute from "../routes/lead/lead_routes.js"
 import contactRoute from "../routes/contact/contact_routes.js"
 import clientRoute from "../routes/client/client_routes.js"
-
+import loginRoute from "../routes/auth/login.js"
 // const userRoute = require("../routes/user/user_routes");
 // const roleRoute = require("../routes/role/role_routes");
 
@@ -55,7 +55,8 @@ import clientRoute from "../routes/client/client_routes.js"
 app.use("/v1/users", userRoute);
 app.use("/v1/leads", leadRoute);
 app.use("/v1/contacts", contactRoute);
-app.use("/v1/clients",clientRoute)
+app.use("/v1/clients", clientRoute)
+app.use("/v1/auth/user", loginRoute)
 
 // app.use("/v2/role", roleRoute);
 
