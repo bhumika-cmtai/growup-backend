@@ -20,7 +20,13 @@ const ClientSchema = new mongoose.Schema({
   tlCode: {
     type:String,
     required:false
-  }
+  },
+  status: {
+    type: String,
+    enum: ['New', 'Contacted', 'Interested', 'Not Interested', 'Converted'],
+    default: 'New',
+    required: false 
+  },
 });
 
 const Client = mongoose.model('Client', ClientSchema);
