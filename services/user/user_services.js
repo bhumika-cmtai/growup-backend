@@ -93,7 +93,7 @@ class UserService {
     }
   }
 
-  async getAllUsers(searchQuery = '', status , page = 1, limit = 20) {
+  async getAllUsers(searchQuery = '', status , page = 1, limit = 8) {
   try {
     const filterQuery = {};
 

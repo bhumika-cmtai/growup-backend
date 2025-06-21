@@ -112,7 +112,7 @@ router.delete('/deleteUser/:id', async (req, res) => {
 // Get all users
 router.get('/getAllUsers', async (req, res) => {
   try {
-   const { searchQuery, status ,page = 1, limit = 20 } = req.query;
+   const { searchQuery, status ,page = 1, limit = 8 } = req.query;
 
     const result = await UserService.getAllUsers(searchQuery,status , page, limit);
 

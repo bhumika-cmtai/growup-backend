@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const ContactSchema = new mongoose.Schema({
+const ClientSchema = new mongoose.Schema({
   name: {
     type: String,
     required: false 
@@ -13,26 +13,16 @@ const ContactSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
-  message: {
-    type: String,
-    required: true 
-  },
   createdOn: {
     type: String,
     required: false 
   },
-  status: {
-    type: String,
-    enum: ['New', 'Contacted', 'NotInterested'],
-    default: 'New',
-    required: false 
-  },
-  reason: {
-    type: String,
-    required: false 
+  tlCode: {
+    type:String,
+    required:false
   }
 });
 
-const Contact = mongoose.model('Contact', ContactSchema);
+const Client = mongoose.model('Client', ClientSchema);
 
-export default Contact;
+export default Client;
