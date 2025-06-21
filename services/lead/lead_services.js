@@ -90,7 +90,7 @@ class LeadService {
     }
   }
 
-  async getAllLeads(searchQuery = '',status ,page = 1, limit = 20) {
+  async getAllLeads(searchQuery = '',status ,page = 1, limit = 8) {
     try {
       // Build the query object for filtering
       const filterQuery = {};
