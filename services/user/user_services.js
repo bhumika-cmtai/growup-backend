@@ -164,6 +164,19 @@ class UserService {
       throw err;
     }
   }
+  async getTlCode(tlcode){
+    try{
+      const user = await User.findOne({ tlcode: tlcode });
+     if (!user) {
+        consoleManager.error("tlcode not found");
+        return null;
+      }
+      return user;
+    } catch (err) {
+      consoleManager.error(`Error fetching tlcode from user: ${err.message}`);
+      throw err;
+    }
+  }
 }
 
 export default new UserService();

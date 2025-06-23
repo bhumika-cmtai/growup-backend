@@ -143,6 +143,21 @@ router.get('/getAllUsers', async (req, res) => {
   }
 });
 
+router.get('/getTlCode/:tlcode',async (req, res) => {
+
+  try {
+    const user = await UserService.getTlCode(req.params.tlcode);
+    if (user) {
+      ResponseManager.sendSuccess(res, user, 200, 'tlcode retrieved successfully');
+    } else {
+      ResponseManager.sendSuccess(res, [], 200, 'tlcode not found');
+    }
+  } catch (err) {
+    ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error fetching user');
+  }
+})
+
+
 
 // Toggle user status
 // router.put('/removeUser/:id', async (req, res) => {
