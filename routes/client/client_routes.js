@@ -10,9 +10,16 @@ router.post('/addClient', async (req, res) => {
     try {
       const client = await ClientService.createClient(req.body);
       return ResponseManager.sendSuccess(res, client, 201, 'client created successfully');
-    } catch (err) {
-      return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error creating client');
+    } 
+    catch (err) {
+    if (err.statusCode) {
+      return ResponseManager.sendError(res, err.statusCode, 'EMAIL_ALREADY_EXISTS', err.message);
+    } else {
+      console.error(err); 
+      return ResponseManager.sendError(res, 500, 'INTERNAL_SERVER_ERROR', 'An unexpected error occurred while creating the client.');
     }
+    
+  }
   });
 
 

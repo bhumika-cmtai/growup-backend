@@ -38,8 +38,15 @@ router.post('/addUser', async (req, res) => {
       const user = await UserService.createUser(req.body);
       return ResponseManager.sendSuccess(res, user, 201, 'User created successfully');
     } catch (err) {
-      return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error creating user');
+
+    if (err.statusCode) {
+      return ResponseManager.sendError(res, err.statusCode, 'EMAIL_ALREADY_EXISTS', err.message);
+    } else {
+      console.error(err); 
+      return ResponseManager.sendError(res, 500, 'INTERNAL_SERVER_ERROR', 'An unexpected error occurred while creating the user.');
     }
+    
+  }
   });
 
 //Create many users 

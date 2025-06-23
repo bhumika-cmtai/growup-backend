@@ -5,8 +5,14 @@ import consoleManager from "../../utils/consoleManager.js";
 
 class UserService {
   async createUser(data) {
-    try {
-      // Manually set createdOn and updatedOn to current date if not provided
+   try {
+      const existingUser = await User.findOne({ email: data.email });
+
+      if (existingUser) {
+        const error = new Error("A user with this email already exists.");
+        error.statusCode = 409; 
+        throw error;
+      }
       data.createdOn =  Date.now();
       data.updatedOn =  Date.now();
 
