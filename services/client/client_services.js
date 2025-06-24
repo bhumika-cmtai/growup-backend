@@ -70,27 +70,29 @@ class ClientService {
     }
   }
 
-  async getAllClients(searchQuery = '',status, page = 1, limit = 8) {
+ async getAllClients(name='',phoneNumber = '', portalName = '', status, page = 1, limit = 8) {
     try {
-      // Build the query object for filtering
       const filterQuery = {};
       
-      if (searchQuery) {
-      const regex = { $regex: searchQuery, $options: 'i' };
-      filterQuery.$or = [
-        { name: regex },
-        { email: regex }
-      ];
-    }
-  if (status) {
+      if (phoneNumber) {
+        filterQuery.phoneNumber = { $regex: `^${phoneNumber}$`, $options: 'i' };
+      }
+
+      if (portalName) {
+        filterQuery.portalName = portalName;
+      }
+  
+      if (status) {
         filterQuery.status = status;
       }
-      // Fetch clients with pagination
+      if(name){
+        filterQuery.name = name;
+      }
+
       const clients = await Client.find(filterQuery)
         .limit(parseInt(limit, 10))
         .skip((parseInt(page, 10) - 1) * parseInt(limit, 10));
   
-      // Get total number of Client for pagination
       const totalClients = await Client.countDocuments(filterQuery);
       const totalPages = Math.ceil(totalClients / limit);
   
@@ -106,7 +108,17 @@ class ClientService {
     }
   }
   
-
+  async getAllPortalNames() {
+    try {
+      const portalNames = await Client.distinct('portalName');
+      consoleManager.log("Portal names retrieved successfully");
+      // Filter out any null, undefined, or empty string values
+      return portalNames.filter(name => name);
+    } catch (err) {
+      consoleManager.error(`Error fetching portal names: ${err.message}`);
+      throw err;
+    }
+  }
 
   async getNumberOfClients() {
     try {
@@ -118,8 +130,6 @@ class ClientService {
       throw err;
     }
   }
-
-  
 
 
 

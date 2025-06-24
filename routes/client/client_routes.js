@@ -69,10 +69,9 @@ router.delete('/deleteClient/:id', async (req, res) => {
 // Get all client
 router.get('/getAllClient', async (req, res) => {
   try {
-    const { searchQuery, status, page = 1, limit = 8 } = req.query;
-    const result = await ClientService.getAllClients(searchQuery, status, page, limit);
+    const { name ,phoneNumber, portalName, status, page = 1, limit = 8 } = req.query;
+    const result = await ClientService.getAllClients(name,phoneNumber, portalName, status, page, limit);
 
-    // Format the response as needed
     return ResponseManager.sendSuccess(
       res, 
       {
@@ -86,14 +85,21 @@ router.get('/getAllClient', async (req, res) => {
     );
   } catch (err) {
     consoleManager.error(`Error fetching client: ${err.message}`);
-    return ResponseManager.sendError(
-      res, 
-      500, 
-      'INTERNAL_ERROR', 
-      'Error fetching client'
-    );
+    return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error fetching client');
   }
 });
+
+// NEW: Route to get portal names
+router.get('/getPortalNames', async (req, res) => {
+  try {
+    const portalNames = await ClientService.getAllPortalNames();
+    return ResponseManager.sendSuccess(res, portalNames, 200, 'Portal names retrieved successfully');
+  } catch (err) {
+    consoleManager.error(`Error in /getPortalNames route: ${err.message}`);
+    return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error fetching portal names');
+  }
+});
+
 
 router.get('/getClientsCount', async (req, res) => {
   try {
