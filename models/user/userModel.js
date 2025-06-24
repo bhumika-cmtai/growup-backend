@@ -17,6 +17,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
+  whatsappNumber: {
+    type: String,
+    required: false 
+  },
+  city: {
+    type: String,
+    required: false
+  },
   role: {
     type: String,
     required: false 
@@ -33,10 +41,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
-  tlCode: {
+  leaderCode: {
     type: String,
     required: false
-  }
+  },
+  work_experience: {
+    type: String,
+    required: false
+  },
+  abhi_aap_kya_karte_hai: {
+    type: String,
+    required: false
+  },
+
 });
 
 const User = mongoose.model('User', userSchema);

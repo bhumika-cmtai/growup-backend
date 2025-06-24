@@ -13,8 +13,24 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
+  qualification: {
+    type: String,
+    required: false
+  },
   source: {
     type:String,
+    required: false
+  },
+  date_of_birth: {
+    type: String,
+    required: false
+  },
+  city: {
+    type: String,
+    required:false
+  },
+  gender: {
+    type: String,
     required: false
   },
   status: {
