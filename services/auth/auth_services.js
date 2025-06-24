@@ -19,30 +19,15 @@ class LoginService {
         consoleManager.error("Invalid password");
         throw new Error("Invalid password");
       }
-
-    //   // Generate a JWT token with user details
-    //   const roleAttribute = await RoleService.getRoleByName(user.role)
-
-    //   const payload = {
-    //     id: user._id,
-    //     name: user.name,
-    //     email: user.email,
-    //     phoneNumber: user.phoneNumber,
-    //     role: user.role,
-    //     roleAttribute: roleAttribute,
-    //     status: user.status,
-    //     createdOn: user.createdOn,
-    //     updatedOn: user.updatedOn,
-    //     reason: user.createdBy,
-    //   };
-
-      // Use environment variables for secret and expiration time
       const payload = {id: user._id}
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN,
       });
-      consoleManager.log("User logged in successfully");
 
+      const userResponse = {name: user.name, email: user.email, role: user.role} 
+
+      consoleManager.log("User logged in successfully");
+      console.log({userResponse, token})
       return token; // Return only the token
     } catch (err) {
       consoleManager.error(`Error logging in user: ${err.message}`);
