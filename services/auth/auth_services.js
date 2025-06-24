@@ -27,7 +27,7 @@ class LoginService {
       const userResponse = {name: user.name, email: user.email, role: user.role} 
 
       consoleManager.log("User logged in successfully");
-      console.log({userResponse, token})
+      // console.log({userResponse, token})
       return token; // Return only the token
     } catch (err) {
       consoleManager.error(`Error logging in user: ${err.message}`);
