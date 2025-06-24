@@ -25,10 +25,6 @@ const ClientSchema = new mongoose.Schema({
     type:String,
     required: false
   },
-  source: {
-    type: [String],
-    required: false
-  }, 
   city: {
     type: String,
     required: false
