@@ -19,7 +19,7 @@ router.post("/login", async (req, res) => {
     }
 
     // Login the user and generate JWT token
-    const token = await LoginService.loginUser(email, password);
+    const {user,token} = await LoginService.loginUser(email, password);
 
     // Encrypt the JWT token
     const encryptedToken = encrypt(token);
@@ -27,17 +27,29 @@ router.post("/login", async (req, res) => {
     // Send success response with the encrypted token
     ResponseManager.sendSuccess(
       res,
-      { token: encryptedToken },
+      {user, token: encryptedToken },
       200,
       "Login successful"
     );
   } catch (err) {
+    if (err.message === "Invalid credentials") {
+      return ResponseManager.sendError(
+        res,
+        401, 
+        "AUTHENTICATION_FAILED",
+        "Invalid email or password. Please try again."
+      );
+    }
+
+    // Handle other unexpected errors
+    consoleManager.error(`Unhandled error in login route: ${err.message}`);
     ResponseManager.sendError(
       res,
       500,
       "INTERNAL_ERROR",
-      "Error logging in user"
+      "An internal server error occurred during login."
     );
+
   }
 });
 

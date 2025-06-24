@@ -11,24 +11,24 @@ class LoginService {
       const user = await User.findOne({ email });
       if (!user) {
         consoleManager.error("User not found");
-        throw new Error("User not found");
+        throw new Error("invalid credentials");
       }
 
       // Compare the provided password with the stored password
       if (user.password !== password) {
         consoleManager.error("Invalid password");
-        throw new Error("Invalid password");
+        throw new Error("Invalid credentials");
       }
       const payload = {id: user._id}
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN,
       });
 
-      const userResponse = {name: user.name, email: user.email, role: user.role} 
+      const userResponse = {_id: user._id, name: user.name, email: user.email, role: user.role} 
 
       consoleManager.log("User logged in successfully");
-      // console.log({userResponse, token})
-      return token; // Return only the token
+      // console.log({user: userResponse, token})
+      return {user:userResponse, token}; // Return only the token
     } catch (err) {
       consoleManager.error(`Error logging in user: ${err.message}`);
       throw err;
