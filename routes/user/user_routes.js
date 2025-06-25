@@ -157,14 +157,14 @@ router.get('/getAllUsers', async (req, res) => {
   }
 });
 
-router.get('/getTlCode/:tlcode',async (req, res) => {
+router.get('/getLeaderCode/:leaderCode',async (req, res) => {
 
   try {
-    const user = await UserService.getTlCode(req.params.tlcode);
+    const user = await UserService.getLeaderCode(req.params.leaderCode);
     if (user) {
-      ResponseManager.sendSuccess(res, user, 200, 'tlcode retrieved successfully');
+      ResponseManager.sendSuccess(res, user, 200, 'leader code retrieved successfully');
     } else {
-      ResponseManager.sendSuccess(res, [], 200, 'tlcode not found');
+      ResponseManager.sendSuccess(res, [], 200, 'leader code not found');
     }
   } catch (err) {
     ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error fetching user');

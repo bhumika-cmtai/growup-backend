@@ -170,16 +170,16 @@ class UserService {
       throw err;
     }
   }
-  async getTlCode(tlcode){
+  async getLeaderCode(leaderCode){
     try{
-      const user = await User.findOne({ tlcode: tlcode });
+      const user = await User.findOne({ leaderCode: leaderCode });
      if (!user) {
-        consoleManager.error("tlcode not found");
+        consoleManager.error("Leader Code not found");
         return null;
       }
       return user;
     } catch (err) {
-      consoleManager.error(`Error fetching tlcode from user: ${err.message}`);
+      consoleManager.error(`Error fetching Leader Code from user: ${err.message}`);
       throw err;
     }
   }
