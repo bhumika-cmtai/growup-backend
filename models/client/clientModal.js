@@ -17,7 +17,7 @@ const ClientSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
-  tlCode: {
+  leaderCode: {
     type:String,
     required:false
   },
@@ -39,6 +39,18 @@ const ClientSchema = new mongoose.Schema({
     default: 'New',
     required: false 
   },
+  reason: {
+    type: String,
+    required: false
+  },
+  ownerName: {
+    type: [String],
+    required: false
+  },
+  ownerNumber: {
+    type: [String],
+    required: false
+  }
 });
 
 const Client = mongoose.model('Client', ClientSchema);

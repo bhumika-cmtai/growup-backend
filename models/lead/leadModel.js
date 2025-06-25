@@ -54,6 +54,14 @@ const leadSchema = new mongoose.Schema({
   reason: {
     type: String,
     required: false 
+  },
+  ownerNumber: {
+    type: [String],
+    required: false
+  },
+  ownerName: {
+    type: [String],
+    required: false
   }
 });
 

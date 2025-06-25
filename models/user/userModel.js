@@ -53,6 +53,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  bio: {
+    type: String,
+    required: false
+  },
+  age: {
+    type: Number,
+    required: false
+  },
+  account_number: {
+    type: String,
+    required: false
+  },
+  Ifsc: {
+    type: String,
+    required: false
+  },
+  upi_id: {
+    type:String,
+    required: false
+  },
 
 });
 
