@@ -248,6 +248,17 @@ class UserService {
     }
   }
 
+    async getNumberOfUsers() {
+      try {
+        const count = await User.countDocuments();
+        consoleManager.log(`Number of users: ${count}`);
+        return count;
+      } catch (err) {
+        consoleManager.error(`Error counting users: ${err.message}`);
+        throw err;
+      }
+    }
+
 
 }
 

@@ -242,7 +242,27 @@ router.put('/update-bank', authMiddleware, async (req, res) => {
     }
 });
 
+router.get('/getUsersCount', async (req, res) => {
+  try {
+    const count = await UserService.getNumberOfUsers();
 
+    return ResponseManager.sendSuccess(
+      res, 
+      { count: count }, 
+      200, 
+      'Lead count retrieved successfully'
+    );
+  } catch (err) {
+    // Use the managers you already have for logging and sending errors
+    consoleManager.error(`Error in /getUsersCount route: ${err.message}`);
+    return ResponseManager.sendError(
+      res, 
+      500, 
+      'INTERNAL_ERROR', 
+      'Error fetching user count'
+    );
+  }
+});
 
 
 // Toggle user status
