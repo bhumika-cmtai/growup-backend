@@ -34,6 +34,7 @@ class LoginService {
       throw err;
     }
   }
+  
 }
 
 export default new LoginService();

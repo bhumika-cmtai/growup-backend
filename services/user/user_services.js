@@ -183,6 +183,75 @@ class UserService {
       throw err;
     }
   }
+
+  async updateUserProfile(userId, profileData) {
+    try {
+      const updateFields = {
+        name: profileData.name,
+        whatsappNumber: profileData.whatsappNumber,
+        city: profileData.city,
+        bio: profileData.bio,
+        updatedOn: Date.now()
+      };
+
+      // Remove any fields that were not provided in the request body
+      Object.keys(updateFields).forEach(key => {
+        if (updateFields[key] === undefined) {
+          delete updateFields[key];
+        }
+      });
+      
+      const user = await User.findByIdAndUpdate(userId, { $set: updateFields }, { new: true }).select('-password');
+      if (!user) {
+        consoleManager.error("User not found for profile update");
+        return null;
+      }
+      
+      consoleManager.log("User profile updated successfully");
+      return user;
+    } catch (err) {
+      consoleManager.error(`Error updating user profile: ${err.message}`);
+      throw err;
+    }
+  }
+
+  // =================================================================
+  // NEW FUNCTION FOR UPDATING BANK DETAILS
+  // =================================================================
+  async updateBankDetails(userId, bankData) {
+    try {
+      const updateFields = {
+        account_number: bankData.account_number,
+        Ifsc: bankData.Ifsc,
+        upi_id: bankData.upi_id,
+        updatedOn: Date.now()
+      };
+
+      // Remove any fields that were not provided in the request body
+      Object.keys(updateFields).forEach(key => {
+         if (updateFields[key] === undefined) {
+          delete updateFields[key];
+        }
+      });
+      
+      const user = await User.findByIdAndUpdate(userId, { $set: updateFields }, { new: true }).select('-password');
+      if (!user) {
+        consoleManager.error("User not found for bank details update");
+        return null;
+      }
+      
+      consoleManager.log("User bank details updated successfully");
+      return user;
+    } catch (err) {
+      consoleManager.error(`Error updating bank details: ${err.message}`);
+      throw err;
+    }
+  }
+
+
 }
+
+
+
 
 export default new UserService();
