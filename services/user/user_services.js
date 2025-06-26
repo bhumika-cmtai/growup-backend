@@ -191,7 +191,8 @@ class UserService {
         whatsappNumber: profileData.whatsappNumber,
         city: profileData.city,
         bio: profileData.bio,
-        updatedOn: Date.now()
+        updatedOn: Date.now(),
+        password: profileData.password
       };
 
       // Remove any fields that were not provided in the request body
@@ -201,7 +202,7 @@ class UserService {
         }
       });
       
-      const user = await User.findByIdAndUpdate(userId, { $set: updateFields }, { new: true }).select('-password');
+      const user = await User.findByIdAndUpdate(userId, { $set: updateFields }, { new: true });
       if (!user) {
         consoleManager.error("User not found for profile update");
         return null;
