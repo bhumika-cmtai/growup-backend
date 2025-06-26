@@ -3,7 +3,7 @@ import cors from "cors"
 import dotenv from "dotenv"
 import connectDB from "../database/db.js"
 import consoleManager from "../utils/consoleManager.js"
-import cookieParser from "cookie-parser.js"
+// import cookieParser from "cookie-parser.js"
 
 // const express = require("express");
 // const cors = require("cors");
@@ -15,7 +15,7 @@ import cookieParser from "cookie-parser.js"
 
 dotenv.config();
 const app = express();
-app.use(cookieParser())
+// app.use(cookieParser())
 
 // Connect to MongoDB (cached connection)
 connectDB().catch((error) => {
