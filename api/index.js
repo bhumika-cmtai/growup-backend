@@ -12,10 +12,8 @@ import consoleManager from "../utils/consoleManager.js"
 // const consoleManager = require("../utils/consoleManager");
 // const cookieParser = require("cookie-parser");
 
-
 dotenv.config();
 const app = express();
-// app.use(cookieParser())
 
 // Connect to MongoDB (cached connection)
 connectDB().catch((error) => {
