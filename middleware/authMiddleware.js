@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import ResponseManager from '../utils/responseManager.js';
-import {decrypt} from "../../utils/encryptionUtils.js";
+// import {decrypt} from "../../utils/encryptionUtils.js";
 
 const authMiddleware = async (req, res, next) => {
   let token;
@@ -8,9 +8,9 @@ const authMiddleware = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const tokenDecrypt = decrypt(token)
+      // const tokenDecrypt = decrypt(token)
 
-      const decoded = jwt.verify(tokenDecrypt, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
       req.user = { id: decoded.id };
 

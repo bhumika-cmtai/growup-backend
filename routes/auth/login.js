@@ -1,7 +1,7 @@
 import express from "express";
 import LoginService from "../../services/auth/auth_services.js"
 import ResponseManager from "../../utils/responseManager.js";
-import { encrypt } from "../../utils/encryptionUtils.js";
+// import { encrypt } from "../../utils/encryptionUtils.js";
 
 const router = express.Router();
 
@@ -22,12 +22,12 @@ router.post("/login", async (req, res) => {
     const {user,token} = await LoginService.loginUser(email, password);
 
     // Encrypt the JWT token
-    const encryptedToken = encrypt(token);
+    // const encryptedToken = encrypt(token);
 
     // Send success response with the encrypted token
     ResponseManager.sendSuccess(
       res,
-      {user, token: encryptedToken },
+      {user, token },
       200,
       "Login successful"
     );
