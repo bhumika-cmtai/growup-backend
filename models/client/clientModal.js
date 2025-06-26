@@ -35,7 +35,7 @@ const ClientSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['New', 'Contacted', 'Interested', 'Not Interested', 'Converted'],
+    enum: ['New', 'RegisterationDone', 'CallCut', 'CallNotPickUp', 'NotInterested', 'InvalidNumber'],
     default: 'New',
     required: false 
   },
