@@ -131,6 +131,48 @@ class ClientService {
     }
   }
 
+  async getClientsCountByDateRange(startDate, endDate) {
+    try {
+      const startTimestamp = new Date(startDate).setUTCHours(0, 0, 0, 0);
+
+      // To include the entire endDate, we get the start of the *next* day.
+      const endOfDay = new Date(endDate);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+      const endTimestamp = endOfDay.getTime();
+
+      const filter = {
+        createdOn: {
+          $gte: String(startTimestamp), 
+          $lte: String(endTimestamp)   
+        }
+      };
+      
+      /*
+      // --- This is the SIMPLER logic if you change `createdOn` to type: Date ---
+      const startOfDay = new Date(startDate);
+      startOfDay.setUTCHours(0, 0, 0, 0);
+      
+      const endOfDay = new Date(endDate);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+
+      const filter = {
+          createdOn: {
+              $gte: startOfDay,
+              $lte: endOfDay
+          }
+      };
+      */
+
+      const count = await Client.countDocuments(filter);
+      consoleManager.log(`Found ${count} clients created between ${startDate} and ${endDate}`);
+      return count;
+
+    } catch (err) {
+      consoleManager.error(`Error counting clients by date range: ${err.message}`);
+      throw err;
+    }
+  }
+
 
 
 }

@@ -1,19 +1,11 @@
 import express from "express"
 import UserService from "../../services/user/user_services.js"
+import AppLinkService from "../../services/applink/applink_service.js"
 import ResponseManager from "../../utils/responseManager.js";
 import consoleManager from "../../utils/consoleManager.js";
-// import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import authMiddleware from '../../middleware/authMiddleware.js'; // Import the new middleware
 import User from '../../models/user/userModel.js'; 
-
-
-
-// const express = require('express');
-
-// const UserService = require('../../services/user/user_services');
-// const ResponseManager = require('../../utils/responseManager');
-// const consoleManager = require('../../utils/consoleManager');
 
 const router = express.Router();
 

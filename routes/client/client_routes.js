@@ -137,4 +137,33 @@ router.get('/getClientsCount', async (req, res) => {
 //   }
 // });
 
+router.post('/getClientsCountByDate', async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
+
+    // Basic validation
+    if (!startDate || !endDate) {
+      return ResponseManager.sendError(res, 400, 'BAD_REQUEST', 'Both startDate and endDate are required in the request body.');
+    }
+
+    const count = await ClientService.getClientsCountByDateRange(startDate, endDate);
+    
+    const responseData = {
+      count: count,
+      startDate: startDate,
+      endDate: endDate
+    };
+
+    return ResponseManager.sendSuccess(res, responseData, 200, 'Client count retrieved successfully for the specified date range.');
+
+  } catch (err) {
+    consoleManager.error(`Error in /getClientsCountByDate route: ${err.message}`);
+    return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error fetching client count by date range.');
+  }
+});
+
+
+
+
+
 export default router;

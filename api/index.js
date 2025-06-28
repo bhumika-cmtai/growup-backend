@@ -59,7 +59,7 @@ app.use("/v1/users", userRoute);
 app.use("/v1/leads", leadRoute);
 app.use("/v1/contacts", contactRoute);
 app.use("/v1/clients", clientRoute)
-app.use("/v1/auth/user", loginRoute)
+app.use("/v1/auth", loginRoute)
 app.use("/v1/session", sessionRoute)
 app.use("/v1/link", linkRoute)
 app.use("/v1/applink", applinkRoute)

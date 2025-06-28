@@ -99,38 +99,90 @@ class UserService {
     }
   }
 
-  async getAllUsers(searchQuery = '', status , page = 1, limit = 8) {
-  try {
-    const filterQuery = {};
+  async getAllUsers(searchQuery = '', status, page = 1, limit = 8) {
+    try {
+      const pageNum = parseInt(page, 10);
+      const limitNum = parseInt(limit, 10);
+      const skip = (pageNum - 1) * limitNum;
 
-    if (searchQuery) {
-      const regex = { $regex: searchQuery, $options: 'i' };
-      filterQuery.$or = [
-        { name: regex },
-        { email: regex }
-      ];
-    }
-    if (status) {
-        filterQuery.status = status;
+      // 1. Build the initial matching stage (same as your old filterQuery)
+      const matchStage = {};
+      if (searchQuery) {
+        const regex = { $regex: searchQuery, $options: 'i' };
+        matchStage.$or = [
+          { name: regex },
+          { email: regex }
+        ];
       }
-  
-      // Fetch users with pagination
-      const users = await User.find(filterQuery)
-        .limit(parseInt(limit, 10))
-        .skip((parseInt(page, 10) - 1) * parseInt(limit, 10));
-  
-      // Get total number of users for pagination
-      const totalUsers = await User.countDocuments(filterQuery);
-      const totalPages = Math.ceil(totalUsers / limit);
-  
+      if (status) {
+        matchStage.status = status;
+      }
+
+      // 2. Main Aggregation Pipeline to get users with client count
+      const usersPipeline = [
+        // Stage 1: Filter users based on search and status
+        { $match: matchStage },
+        
+        // Stage 2: Perform a "left join" to the 'clients' collection
+        // It connects User.leaderCode with Client.leaderCode
+        {
+          $lookup: {
+            from: "clients", // The collection name in MongoDB (Mongoose pluralizes it)
+            localField: "leaderCode", // Field from the User collection
+            foreignField: "leaderCode", // Field from the Client collection
+            as: "registeredClients" // The name of the new array field to add
+          }
+        },
+
+        // Stage 3: Add the new 'registeredClientCount' field
+        // We calculate the size of the 'registeredClients' array from the $lookup
+        {
+          $addFields: {
+            registeredClientCount: { $size: "$registeredClients" }
+          }
+        },
+
+        // Stage 4: Clean up the response
+        // Remove the temporary 'registeredClients' array and the sensitive password field
+        {
+          $project: {
+            registeredClients: 0, // Exclude the full client list
+            password: 0 // CRITICAL: Never send the password
+          }
+        },
+        
+        // Stage 5: Sort results (optional, but good for consistency)
+        { $sort: { createdOn: -1 } },
+
+        // Stage 6: Apply pagination
+        { $skip: skip },
+        { $limit: limitNum }
+      ];
+      
+      // 3. Separate Aggregation to get the total count for pagination
+      const countPipeline = [
+          { $match: matchStage },
+          { $count: 'totalUsers' }
+      ];
+
+      // 4. Execute both pipelines
+      const [users, totalCountResult] = await Promise.all([
+          User.aggregate(usersPipeline),
+          User.aggregate(countPipeline)
+      ]);
+      
+      const totalUsers = totalCountResult.length > 0 ? totalCountResult[0].totalUsers : 0;
+      const totalPages = Math.ceil(totalUsers / limitNum);
+
       return {
-        users, 
-        totalPages, 
-        currentPage: parseInt(page, 10), 
+        users,
+        totalPages,
+        currentPage: pageNum,
         totalUsers
       };
+
     } catch (err) {
-      consoleManager.error(`Error fetching users: ${err.message}`);
+      consoleManager.error(`Error fetching users with client count: ${err.message}`);
       throw err;
     }
   }
