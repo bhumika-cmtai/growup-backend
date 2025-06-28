@@ -62,6 +62,10 @@ const leadSchema = new mongoose.Schema({
   ownerName: {
     type: [String],
     required: false
+  },
+  leaderCode: {
+    type: String,
+    required: false
   }
 });
 

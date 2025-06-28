@@ -2,11 +2,6 @@ import express from "express"
 import LeadService from "../../services/lead/lead_services.js"
 import ResponseManager from "../../utils/responseManager.js";
 import consoleManager from "../../utils/consoleManager.js";
-// const express = require('express');
-
-// const ResponseManager = require('../../utils/responseManager');
-// const consoleManager = require('../../utils/consoleManager');
-
 const router = express.Router();
 
 // Create a new lead

@@ -127,30 +127,6 @@ class LeadService {
   }
   
 
-//   async toggleLeadStatus(leadId) {
-//     try {
-//       const lead = await Lead.findById(leadId);
-//       if (!lead) {
-//         consoleManager.error("Lead not found for status toggle");
-//         return null;
-//       }
-
-//       // Toggle the status between 'active' and 'inactive'
-//       const newStatus = lead.status === "Active" ? "Inactive" : "Active";
-//       const updatedLead = await Lead.findByIdAndUpdate(
-//         leadId,
-//         { status: newStatus, updatedOn: Date.now() },
-//         { new: true }
-//       );
-
-//       consoleManager.log(`Lead status updated to ${newStatus}`);
-//       return updatedLead;
-//     } catch (err) {
-//       consoleManager.error(`Error toggling lead status: ${err.message}`);
-//       throw err;
-//     }
-//   }
-
   async getNumberOfLeads() {
     try {
       const count = await Lead.countDocuments();
@@ -161,6 +137,11 @@ class LeadService {
       throw err;
     }
   }
+
+
+
+
+
 }
 
 export default new LeadService();
