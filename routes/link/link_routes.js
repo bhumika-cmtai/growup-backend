@@ -1,6 +1,7 @@
 import express from "express";
 import LinkService from "../../services/link/link_services.js"
 import ResponseManager from "../../utils/responseManager.js";
+import consoleManager from "../../utils/consoleManager.js";
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.post('/add', async (req, res) => {
 });
 
 
-router.get('/:slug', async (req, res) => {
+router.get('/portal/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
 
@@ -44,6 +45,21 @@ router.get('/:slug', async (req, res) => {
     consoleManager.error(`Error in /:slug link route: ${err.message}`);
     return ResponseManager.sendError(res, 500, 'INTERNAL_SERVER_ERROR', 'Error fetching link data.');
   }
+});
+
+
+router.get('/all', async (req, res) => {
+  console.log("all link fetch")
+    try {
+      const allLinks = await LinkService.getAllLinks();
+      console.log(allLinks)
+  
+      return ResponseManager.sendSuccess(res, allLinks, 200, 'All links fetched successfully');
+  
+    } catch (err) {
+      consoleManager.error(`Error in /all link route: ${err.message}`);
+      return ResponseManager.sendError(res, 500, 'INTERNAL_SERVER_ERROR', 'Error fetching all links.');
+    }
 });
 
 router.patch('/:id', async (req, res) => {

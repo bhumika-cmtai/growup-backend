@@ -63,6 +63,22 @@ class LinkService {
     }
   }
 
+  async getAllLinks() {
+        try {
+          // Find all documents, sort them by portalName alphabetically
+          // .lean() is a performance optimization for read-only queries
+          console.log("hello")
+          const links = await Link.find({}).lean();
+          console.log(links)
+          
+          consoleManager.log("Successfully fetched all links.");
+          return links;
+        } catch (err) {
+          consoleManager.error(`Error fetching all links: ${err.message}`);
+          throw err;
+        }
+    }
+
 }
 
 export default new LinkService()
