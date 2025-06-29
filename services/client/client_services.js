@@ -5,10 +5,10 @@ class ClientService {
   async createClient(data) {
     try {
       // Manually set createdOn and updatedOn to current date if not provided
-      const existingClient = await Client.findOne({email: data.email})
+      const existingClient = await Client.findOne({phoneNumber: data.phoneNumber})
       
       if (existingClient) {
-        const error = new Error("A client with this email already exists.");
+        const error = new Error("A client with this phone Number already exists.");
         error.statusCode = 409; 
         throw error;
       }

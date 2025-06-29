@@ -7,7 +7,7 @@ const leadSchema = new mongoose.Schema({
   email: {
     type: String,
     required: false, 
-    unique: true 
+    // unique: true 
   },
   phoneNumber: {
     type: String,
@@ -28,11 +28,14 @@ const leadSchema = new mongoose.Schema({
   ekyc_stage: {
     type: String,
     enum: ['complete'|'notComplete'],
+    default: 'notComplete',
     required: false,
   },
   trade_status: {
     type: String,
-    enum: ['matched' | 'notMatched']
+    enum: ['matched' | 'notMatched'],
+    default: 'notMatched',
+    required: false,
   },
   city: {
     type: String,
