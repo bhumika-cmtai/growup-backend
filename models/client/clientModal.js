@@ -7,7 +7,7 @@ const ClientSchema = new mongoose.Schema({
   email: {
     type: String,
     required: false, 
-    unique: true 
+    // unique: true 
   },
   phoneNumber: {
     type: String,
