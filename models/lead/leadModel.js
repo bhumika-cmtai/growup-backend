@@ -21,6 +21,10 @@ const leadSchema = new mongoose.Schema({
     type:String,
     required: false
   },
+  portal_name: {
+    type:String,
+    required: false
+  },
   date_of_birth: {
     type: String,
     required: false

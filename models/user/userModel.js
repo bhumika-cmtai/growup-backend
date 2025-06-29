@@ -45,6 +45,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  income: {
+    type: Number,
+    required:false,
+    default: 0
+  },
   work_experience: {
     type: String,
     required: false
