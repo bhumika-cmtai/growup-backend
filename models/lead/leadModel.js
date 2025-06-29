@@ -25,6 +25,15 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  ekyc_stage: {
+    type: String,
+    enum: ['complete'|'notComplete'],
+    required: false,
+  },
+  trade_status: {
+    type: String,
+    enum: ['matched' | 'notMatched']
+  },
   city: {
     type: String,
     required:false
