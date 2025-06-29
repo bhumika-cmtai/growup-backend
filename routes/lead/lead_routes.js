@@ -8,26 +8,27 @@ const router = express.Router();
 router.post('/addLead', async (req, res) => {
     try {
       // Extract fields from the request body
-      if (!req.body.name) {
-        return ResponseManager.handleBadRequestError(res, 'Name is required');
-      }
+      // if (!req.body.name) {
+      //   return ResponseManager.handleBadRequestError(res, 'Name is required');
+      // }
   
-      if (!req.body.email) {
-        return ResponseManager.handleBadRequestError(res, 'Email is required');
-      }
+      // if (!req.body.email) {
+      //   return ResponseManager.handleBadRequestError(res, 'Email is required');
+      // }
       
-      if (!req.body.phoneNumber) {
-        return ResponseManager.handleBadRequestError(res, 'Primary phone is required');
-      }
+      // if (!req.body.phoneNumber) {
+      //   return ResponseManager.handleBadRequestError(res, 'Primary phone is required');
+      // }
   
-      if (!req.body.status) {
-        return ResponseManager.handleBadRequestError(res, 'Status is required');
-      }
+      // if (!req.body.status) {
+      //   return ResponseManager.handleBadRequestError(res, 'Status is required');
+      // }
   
       // Create the laed if all required fields are present
       const lead = await LeadService.createLead(req.body);
       return ResponseManager.sendSuccess(res, lead, 201, 'Lead created successfully');
     } catch (err) {
+      console.log(err)
       return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error creating lead');
     }
   });
