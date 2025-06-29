@@ -13,9 +13,10 @@ router.post('/addClient', async (req, res) => {
     } 
     catch (err) {
     if (err.statusCode) {
-      return ResponseManager.sendError(res, err.statusCode, 'EMAIL_ALREADY_EXISTS', err.message);
+      return ResponseManager.sendError(res, err.statusCode, 'phone_number_exist', err.message);
     } else {
       console.error(err); 
+      console.log(err)
       return ResponseManager.sendError(res, 500, 'INTERNAL_SERVER_ERROR', 'An unexpected error occurred while creating the client.');
     }
     
