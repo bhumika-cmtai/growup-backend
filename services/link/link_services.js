@@ -67,9 +67,9 @@ class LinkService {
         try {
           // Find all documents, sort them by portalName alphabetically
           // .lean() is a performance optimization for read-only queries
-          console.log("hello")
+          // console.log("hello")
           const links = await Link.find({}).lean();
-          console.log(links)
+          // console.log(links)
           
           consoleManager.log("Successfully fetched all links.");
           return links;
