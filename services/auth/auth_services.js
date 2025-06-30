@@ -54,8 +54,8 @@ class LoginService {
   async loginUser(email, password) {
     try {
       // Find a user who is NOT an admin by their email
-      const user = await User.findOne({ email: email, role: { $ne: 'admin' } });
-      
+      const user = await User.findOne({ email: email});
+      console.log(user)
       if (!user) {
         consoleManager.error(`Login attempt failed: Non-admin user not found for email: ${email}`);
         throw new Error("Invalid credentials");

@@ -9,8 +9,10 @@ const router = express.Router();
 router.post('/addContact', async (req, res) => {
     try {
       const contact = await ContactService.createContact(req.body);
+      // console.log(contact)
       return ResponseManager.sendSuccess(res, contact, 201, 'contact created successfully');
     } catch (err) {
+      // console.log(err)
       return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error creating contact');
     }
   });

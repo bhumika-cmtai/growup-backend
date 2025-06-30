@@ -20,6 +20,8 @@ router.post("/login", async (req, res) => {
       );
     }
 
+    console.log(email)
+    console.log(password)
     // Login the user and generate JWT token
     const {user,token} = await LoginService.loginUser(email, password);
 
@@ -35,6 +37,7 @@ router.post("/login", async (req, res) => {
     );
   } catch (err) {
     if (err.message === "Invalid credentials") {
+      console.log(err)
       return ResponseManager.sendError(
         res,
         401, 
