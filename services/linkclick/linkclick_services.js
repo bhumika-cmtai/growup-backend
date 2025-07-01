@@ -71,7 +71,7 @@ class LinkClickService {
     }
   }
 
- async getAllLinkClicks(name='',phoneNumber = '', portalName = '', status, page = 1, limit = 8) {
+ async getAllLinkClicks(name='',phoneNumber = '', portalName = '',leaderCode='', status, page = 1, limit = 8) {
     try {
       const filterQuery = {};
       
@@ -82,7 +82,11 @@ class LinkClickService {
       if (portalName) {
         filterQuery.portalName = portalName;
       }
-  
+      
+      if (leaderCode) {
+        filterQuery.leaderCode = leaderCode;
+      }
+
       if (status) {
         filterQuery.status = status;
       }
