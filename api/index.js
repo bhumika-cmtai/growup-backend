@@ -65,8 +65,8 @@ app.use("/v1/auth", loginRoute)
 app.use("/v1/session", sessionRoute)
 app.use("/v1/link", linkRoute)
 app.use("/v1/applink", applinkRoute)
-app.use("/v1/register", registerationRoute)
-app.use("/v1/linkclick", linkclickRoute)
+app.use("/v1/registers", registerationRoute)
+app.use("/v1/linkclicks", linkclickRoute)
 // app.use("/v2/role", roleRoute);
 
 
