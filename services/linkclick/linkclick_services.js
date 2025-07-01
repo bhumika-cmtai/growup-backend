@@ -95,18 +95,18 @@ class LinkClickService {
         filterQuery.name = { $regex: name, $options: 'i' };
       }
 
-      const linkClicks = await LinkClick.find(filterQuery)
+      const linkclicks  = await LinkClick.find(filterQuery)
         .limit(parseInt(limit, 10))
         .skip((parseInt(page, 10) - 1) * parseInt(limit, 10));
   
-      const totalLinkClicks = await LinkClick.countDocuments(filterQuery);
-      const totalPages = Math.ceil(totalLinkClicks / limit);
+      const totalLinkclicks = await LinkClick.countDocuments(filterQuery);
+      const totalPages = Math.ceil(totalLinkclicks / limit);
   
       return {
-        linkClicks, 
+        linkclicks, 
         totalPages, 
         currentPage: parseInt(page, 10), 
-        totalLinkClicks
+        totalLinkclicks
       };
     } catch (err) {
       consoleManager.error(`Error fetching linkClicks: ${err.message}`);
