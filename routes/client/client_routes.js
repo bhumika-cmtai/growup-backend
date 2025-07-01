@@ -163,6 +163,31 @@ router.post('/getClientsCountByDate', async (req, res) => {
   }
 });
 
+router.get('/getClientsByOwner/:phoneNumber', async (req, res) => {
+  try {
+    const { phoneNumber } = req.params;
+
+    // Basic validation
+    if (!phoneNumber) {
+      return ResponseManager.sendError(res, 400, 'BAD_REQUEST', 'Owner phone number is required.');
+    }
+
+    const groupedClients = await ClientService.getClientsByOwnerNumber(phoneNumber);
+    
+    // If the service returns an array (even an empty one), the operation was successful.
+    if (groupedClients && groupedClients.length > 0) {
+      return ResponseManager.sendSuccess(res, groupedClients, 200, 'Owner\'s clients retrieved and grouped by portal successfully.');
+    } else {
+      // It's correct to return an empty array if the user has no assigned clients.
+      return ResponseManager.sendSuccess(res, [], 200, 'No clients found for the specified owner.');
+    }
+
+  } catch (err) {
+    consoleManager.error(`Error in /getClientsByOwner route: ${err.message}`);
+    return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'An error occurred while fetching clients by owner.');
+  }
+});
+
 
 
 

@@ -202,3 +202,4 @@ GET - /v1/clients/getClientsCountByDate
     "endDate": "2025-10-31"
 }
 
+GET - v1/clients/getClientsByOwner 

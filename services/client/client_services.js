@@ -173,6 +173,44 @@ class ClientService {
     }
   }
 
+async getClientsByOwnerNumber(phoneNumber) {
+    try {
+      const aggregationPipeline = [
+        // Stage 1: Find all clients where the user's 'phoneNumber' 
+        // is present in the 'ownerNumber' array.
+        {
+          $match: {
+            ownerNumber: phoneNumber
+          }
+        },
+        // Stage 2: Group the found documents by the 'portalName' field.
+        {
+          $group: {
+            _id: "$portalName", // The field to group by
+            clients: { $push: "$$ROOT" } // Create an array called 'clients' with all documents in the group
+          }
+        },
+        // Stage 3 (Optional but recommended): Format the output to be cleaner.
+        {
+          $project: {
+            _id: 0, // Remove the default _id field from the group
+            portalName: "$_id", // Rename _id to portalName
+            clients: "$clients" // Keep the clients array
+          }
+        }
+      ];
+
+      const groupedClients = await Client.aggregate(aggregationPipeline);
+      
+      consoleManager.log(`Successfully found and grouped clients for owner: ${phoneNumber}`);
+      return groupedClients;
+
+    } catch (err) {
+      consoleManager.error(`Error fetching clients by owner number: ${err.message}`);
+      throw err; // Re-throw the error to be handled by the route controller
+    }
+  }
+
 
 
 }
