@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const ContactSchema = new mongoose.Schema({
+const RegisterationSchema = new mongoose.Schema({
   name: {
     type: String,
     required: false 
@@ -13,7 +13,7 @@ const ContactSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
-  message: {
+  leaderCode: {
     type: String,
     required: true 
   },
@@ -33,6 +33,6 @@ const ContactSchema = new mongoose.Schema({
   }
 });
 
-const Contact = mongoose.model('Contact', ContactSchema);
+const Registeration = mongoose.model('Registeration', RegisterationSchema);
 
-export default Contact;
+export default Registeration;

@@ -203,3 +203,45 @@ GET - /v1/clients/getClientsCountByDate
 }
 
 GET - v1/clients/getClientsByOwner 
+
+
+REGISTERED - 
+POST - /v1/register/addRegister
+GET - /v1/register/getRegister/id
+PUT - /v1/register/updateRegister/id
+DELETE - /v1/register/deleteRegister/id 
+GET - /v1/register/getAllRegister
+GET - /v1/register/getRegistersCount
+{
+  "statusCode": 200,
+  "message": "registers count retrieved successfully",
+  "data": {
+    "count": 3
+  },
+  "errorCode": "NO",
+  "errorMessage": ""
+}
+
+LINKCLICKS - 
+POST - /v1/linkclick/addLinkclick
+{
+  "statusCode": 201,
+  "message": "linkclick created successfully",
+  "data": {
+    "name": "aditya",
+    "email": "adi@gmail.com",
+    "phoneNumber": "80975329",
+    "createdOn": "1751369563699",
+    "leaderCode": "2425",
+    "portalName": "upstox",
+    "status": "New",
+    "_id": "6863c75b3df7d7d3cbb1265c",
+    "__v": 0
+  },
+  "errorCode": "NO",
+  "errorMessage": ""
+}
+GET - /v1/linkclick/getLinkclick/id
+PUT - /v1/linkclick/updateLinkclick/id
+DELETE - /v1/linkclick/deleteLinkclick/id 
+GET - /v1/linkclick/getAllLinkclick

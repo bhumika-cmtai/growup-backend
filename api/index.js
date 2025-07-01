@@ -49,6 +49,8 @@ import loginRoute from "../routes/auth/login.js"
 import sessionRoute from "../routes/session/session_routes.js"
 import linkRoute from "../routes/link/link_routes.js"
 import applinkRoute from "../routes/applink/applink_routes.js"
+import registerationRoute from "../routes/registeration/registeration_routes.js"
+import linkclickRoute from "../routes/linkclick/linkclick_routes.js"
 // const userRoute = require("../routes/user/user_routes");
 // const roleRoute = require("../routes/role/role_routes");
 
@@ -63,6 +65,8 @@ app.use("/v1/auth", loginRoute)
 app.use("/v1/session", sessionRoute)
 app.use("/v1/link", linkRoute)
 app.use("/v1/applink", applinkRoute)
+app.use("/v1/register", registerationRoute)
+app.use("/v1/linkclick", linkclickRoute)
 // app.use("/v2/role", roleRoute);
 
 

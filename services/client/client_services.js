@@ -25,6 +25,35 @@ class ClientService {
     }
   }
 
+  async createManyClients(clientsDataArray) {
+    try {
+      // Validate that the input is a non-empty array
+      if (!Array.isArray(clientsDataArray) || clientsDataArray.length === 0) {
+        throw new Error("Input must be a non-empty array of client data.");
+      }
+  
+      const now = Date.now(); // Get the current time once for consistency across all clients
+  
+      //  add timestamps 
+      const clientsToInsert = clientsDataArray.map(clientDoc => ({
+        ...clientDoc,          
+        createdOn: now,      
+        updatedOn: now,      
+      }));
+  
+      
+      const createdClients = await User.insertMany(clientsToInsert, { ordered: false });
+  
+      consoleManager.log(`Successfully created ${createdClients.length} clients.`);
+      return createdClients;
+      
+    } catch (err) {
+      consoleManager.error(`Error creating clients in bulk: ${err.message}`);
+      throw err; // Re-throw the error to be caught by the route handler
+    }
+  }
+
+
   async getClientById(clientId) {
     try {
       const client = await Client.findById(clientId);

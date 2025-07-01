@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const ContactSchema = new mongoose.Schema({
+const LinkClickSchema = new mongoose.Schema({
   name: {
     type: String,
     required: false 
@@ -7,19 +7,23 @@ const ContactSchema = new mongoose.Schema({
   email: {
     type: String,
     required: false, 
-    unique: true 
+    // unique: true 
   },
   phoneNumber: {
     type: String,
     required: false 
   },
-  message: {
-    type: String,
-    required: true 
-  },
   createdOn: {
     type: String,
     required: false 
+  },
+  leaderCode: {
+    type:String,
+    required:false
+  },
+  portalName: {
+    type:String,
+    required: false
   },
   status: {
     type: String,
@@ -29,10 +33,10 @@ const ContactSchema = new mongoose.Schema({
   },
   reason: {
     type: String,
-    required: false 
+    required: false
   }
 });
 
-const Contact = mongoose.model('Contact', ContactSchema);
+const LinkClick = mongoose.model('linkClick', LinkClickSchema);
 
-export default Contact;
+export default LinkClick;
