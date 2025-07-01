@@ -70,8 +70,8 @@ router.delete('/deleteClient/:id', async (req, res) => {
 // Get all client
 router.get('/getAllClient', async (req, res) => {
   try {
-    const { name ,phoneNumber, portalName, status, page = 1, limit = 8 } = req.query;
-    const result = await ClientService.getAllClients(name,phoneNumber, portalName, status, page, limit);
+    const { searchQuery, phoneNumber, portalName, status, page = 1, limit = 8 } = req.query;
+    const result = await ClientService.getAllClients(searchQuery, phoneNumber, portalName, status, page, limit);
 
     return ResponseManager.sendSuccess(
       res, 

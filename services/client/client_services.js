@@ -85,8 +85,9 @@ class ClientService {
       if (status) {
         filterQuery.status = status;
       }
-      if(name){
-        filterQuery.name = name;
+      if (name) {
+        // Use $regex for a "contains" search and $options: 'i' for case-insensitivity
+        filterQuery.name = { $regex: name, $options: 'i' };
       }
 
       const clients = await Client.find(filterQuery)
