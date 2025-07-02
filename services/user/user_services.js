@@ -315,6 +315,21 @@ class UserService {
       }
     }
 
+    async updateIncomesForMultipleUsers(phoneNumbers, amountToAdd) {
+        try {
+            // Use $inc to atomically increment the income field for all matching users
+            const result = await User.updateMany(
+                { phoneNumber: { $in: phoneNumbers } }, // Filter: find users whose phone number is in the array
+                { $inc: { income: amountToAdd } }      // Update: increment the income field by the specified amount
+            );
+
+            consoleManager.log(`Successfully updated income for ${result.modifiedCount} users.`);
+            return result;
+        } catch (err) {
+            consoleManager.error(`Error updating incomes for multiple users: ${err.message}`);
+            throw err; // Re-throw the error to be handled by the calling service
+        }
+    }
 
 }
 

@@ -1,5 +1,6 @@
 import express from "express"
 import ClientService from "../../services/client/client_services.js";
+
 import ResponseManager from "../../utils/responseManager.js";
 import consoleManager from "../../utils/consoleManager.js";
 
@@ -188,6 +189,32 @@ router.get('/getClientsByOwner/:phoneNumber', async (req, res) => {
   }
 });
 
+router.post('/:clientId/distribute-commission', async (req, res) => {
+    try {
+        const { clientId } = req.params;
+        const { commission } = req.body;
+
+        // Basic validation
+        if (!commission || typeof commission !== 'number' || commission <= 0) {
+            return ResponseManager.sendError(res, 400, 'BAD_REQUEST', 'A valid, positive commission amount is required in the request body.');
+        }
+
+        const result = await ClientService.distributeCommission(clientId, commission);
+
+        return ResponseManager.sendSuccess(res, result, 200, 'Commission distributed successfully.');
+
+    } catch (err) {
+        // Handle specific errors from the service layer
+        console.log(err)
+        if (err.statusCode) {
+            const errorCode = err.statusCode === 404 ? 'NOT_FOUND' : 'BAD_REQUEST';
+            return ResponseManager.sendError(res, err.statusCode, errorCode, err.message);
+        }
+
+        consoleManager.error(`Error in /distribute-commission route: ${err.message}`);
+        return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'An unexpected error occurred.');
+    }
+});
 
 
 

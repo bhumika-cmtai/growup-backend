@@ -1,5 +1,6 @@
 import consoleManager from "../../utils/consoleManager.js";
 import Client from "../../models/client/clientModal.js";
+import UserService from "../../services/user/user_services.js"
 
 class ClientService {
   async createClient(data) {
@@ -241,7 +242,36 @@ async getClientsByOwnerNumber(phoneNumber) {
     }
   }
 
+  async distributeCommission(clientId, totalCommission) {
+        // 1. Find the client
+        const client = await Client.findById(clientId).lean();
+        if (!client) {
+            const error = new Error('Client not found.');
+            error.statusCode = 404;
+            throw error;
+        }
 
+        // 2. Get the owners and validate
+        const ownerNumbers = client.ownerNumber;
+        if (!ownerNumbers || ownerNumbers.length === 0) {
+            const error = new Error('This client has no owners to receive a commission.');
+            error.statusCode = 422; // Unprocessable Entity, as the action cannot be performed
+            throw error;
+        }
+
+        // 3. Calculate the share for each owner
+        const commissionShare = totalCommission / ownerNumbers.length;
+
+        // 4. Call the UserService to update the incomes
+        const updateResult = await UserService.updateIncomesForMultipleUsers(ownerNumbers, commissionShare);
+
+        return {
+            message: `Commission of ${totalCommission} distributed among ${ownerNumbers.length} owners.`,
+            paidPerOwner: commissionShare.toFixed(2),
+            ownersPaidCount: updateResult.modifiedCount,
+            totalOwnersInList: ownerNumbers.length,
+        };
+    }
 
 }
 
