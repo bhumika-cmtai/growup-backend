@@ -224,7 +224,10 @@ class UserService {
   }
   async getLeaderCode(leaderCode){
     try{
-      const user = await User.findOne({ leaderCode: leaderCode });
+      const user = await User.findOne(
+        { leaderCode: leaderCode },
+        'name leaderCode -_id' 
+      );
      if (!user) {
         consoleManager.error("Leader Code not found");
         return null;

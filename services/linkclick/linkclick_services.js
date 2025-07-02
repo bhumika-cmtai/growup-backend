@@ -76,7 +76,7 @@ class LinkClickService {
       const filterQuery = {};
       
       if (phoneNumber) {
-        filterQuery.phoneNumber = { $regex: `^${phoneNumber}$`, $options: 'i' };
+        filterQuery.phoneNumber = { $regex: `^${phoneNumber}`, $options: 'i' };
       }
 
       if (portalName) {
@@ -84,7 +84,7 @@ class LinkClickService {
       }
       
       if (leaderCode) {
-        filterQuery.leaderCode = leaderCode;
+        filterQuery.leaderCode = { $regex: `^${leaderCode}`, $options: 'i' };
       }
 
       if (status) {
@@ -92,10 +92,11 @@ class LinkClickService {
       }
       if (name) {
         // Use $regex for a "contains" search and $options: 'i' for case-insensitivity
-        filterQuery.name = { $regex: name, $options: 'i' };
+               filterQuery.name = { $regex: `^${name}`, $options: 'i' };
       }
 
       const linkclicks  = await LinkClick.find(filterQuery)
+        .sort({ createdOn: -1 }) // Good practice to sort results
         .limit(parseInt(limit, 10))
         .skip((parseInt(page, 10) - 1) * parseInt(limit, 10));
   
