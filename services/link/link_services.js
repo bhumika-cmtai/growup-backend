@@ -13,8 +13,8 @@ class LinkService {
             return link
         }
         catch(error){
-            consoleManager.error(`Error creating link: ${err.message}`)
-            throw err
+            consoleManager.error(`Error creating link: ${error.message}`)
+            throw error
         }
     }
     async getLinkByPortalName(portalName) {
@@ -62,6 +62,25 @@ class LinkService {
       throw err;
     }
   }
+
+  async getCommissionByPortalName(portalName) {
+    try {
+      // Find by portalName and select only the commision field
+      const result = await Link.findOne({ portalName: portalName }).select('commission -_id').lean();
+      
+      if (result) {
+        consoleManager.log(`Successfully found commission for portal: ${portalName}`);
+      } else {
+        consoleManager.warn(`No commission found for portal: ${portalName}`);
+      }
+      
+      return result; // Will return { commission: '...' } or null
+    } catch (err) {
+      consoleManager.error(`Error fetching commission for portal ${portalName}: ${err.message}`);
+      throw err;
+    }
+  }
+
 
   async getAllLinks() {
         try {

@@ -11,6 +11,10 @@ const linkSchema = new mongoose.Schema({
     type: String,
     required: true, 
     trim: true
+  },
+  commission: {
+    type: String,
+    required: false
   }
 });
 

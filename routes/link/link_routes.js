@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/add', async (req, res) => {
   try {
-    const { portalName, link } = req.body;
+    const { portalName, link, commision } = req.body;
 
 
     const newLink = await LinkService.createLink(req.body);
@@ -47,6 +47,26 @@ router.get('/portal/:slug', async (req, res) => {
   }
 });
 
+
+router.get('/portal/:slug/commission', async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const commissionData = await LinkService.getCommissionByPortalName(slug);
+    console.log(commissionData)
+
+    if (!commissionData) {
+      return ResponseManager.sendError(res, 404, 'NOT_FOUND', `Commission for portal '${slug}' not found.`);
+    }
+
+    return ResponseManager.sendSuccess(res, commissionData, 200, 'Commission fetched successfully');
+
+  } catch (err) {
+    console.log(err)
+    consoleManager.error(`Error in /portal/:slug/commission route: ${err.message}`);
+    return ResponseManager.sendError(res, 500, 'INTERNAL_SERVER_ERROR', 'Error fetching commission data.');
+  }
+});
 
 router.get('/all', async (req, res) => {
   console.log("all link fetch")
