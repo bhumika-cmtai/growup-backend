@@ -51,6 +51,8 @@ import linkRoute from "../routes/link/link_routes.js"
 import applinkRoute from "../routes/applink/applink_routes.js"
 import registerationRoute from "../routes/registeration/registeration_routes.js"
 import linkclickRoute from "../routes/linkclick/linkclick_routes.js"
+import joinlinkRoute from "../routes/joinlink/joinlink_routes.js"
+// const userRoute = require("../routes/user/user_routes");
 // const userRoute = require("../routes/user/user_routes");
 // const roleRoute = require("../routes/role/role_routes");
 
@@ -67,6 +69,7 @@ app.use("/v1/link", linkRoute)
 app.use("/v1/applink", applinkRoute)
 app.use("/v1/registers", registerationRoute)
 app.use("/v1/linkclicks", linkclickRoute)
+app.use("/v1/joinlinks", joinlinkRoute)
 // app.use("/v2/role", roleRoute);
 
 
