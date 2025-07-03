@@ -256,6 +256,25 @@ router.get('/getUsersCount', async (req, res) => {
   }
 });
 
+router.get('/getTotalIncome', async (req, res) => {
+  try {
+    const totalIncome = await UserService.getTotalIncome();
+    return ResponseManager.sendSuccess(
+      res,
+      { totalIncome },
+      200,
+      'Total income of all users retrieved successfully'
+    );
+  } catch (err) {
+    consoleManager.error(`Error in /getTotalIncome route: ${err.message}`);
+    return ResponseManager.sendError(
+      res,
+      500,
+      'INTERNAL_ERROR',
+      'Error fetching total income'
+    );
+  }
+});
 
 // Toggle user status
 // router.put('/removeUser/:id', async (req, res) => {

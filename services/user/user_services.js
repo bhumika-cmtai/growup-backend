@@ -331,6 +331,20 @@ class UserService {
         }
     }
 
+    async getTotalIncome() {
+      try {
+        const result = await User.aggregate([
+          { $group: { _id: null, totalIncome: { $sum: "$income" } } }
+        ]);
+        const totalIncome = result.length > 0 ? result[0].totalIncome : 0;
+        consoleManager.log(`Total income of all users: ${totalIncome}`);
+        return totalIncome;
+      } catch (err) {
+        consoleManager.error(`Error calculating total income: ${err.message}`);
+        throw err;
+      }
+    }
+
 }
 
 
