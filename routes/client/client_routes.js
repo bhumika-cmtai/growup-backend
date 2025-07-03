@@ -216,6 +216,26 @@ router.post('/:clientId/distribute-commission', async (req, res) => {
     }
 });
 
+router.post('/addManyClient', async (req,res)=>{
+    try {
+    const clientArray = req.body;
+
+    if (!Array.isArray(clientArray) || clientArray.length === 0) {
+      return ResponseManager.handleBadRequestError(res, 'Request body must be a non-empty array of client objects.');
+    }
+
+    const createdClients = await ClientService.createManyClients(leadsArray);
+
+    const successMessage = `Successfully processed request. Created ${createdClients.length} of ${clientArray.length} leads.`;
+    return ResponseManager.sendSuccess(res, createdClients, 201, successMessage);
+
+  } catch (err) {
+    consoleManager.error(`Error in /addManyClient route: ${err.message}`);
+    console.log(`Error in /addManyClient route: ${err.message}`)
+    return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'An error occurred during the bulk creation process.');
+  }
+})
+
 
 
 

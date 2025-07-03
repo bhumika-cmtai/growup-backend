@@ -61,6 +61,11 @@ const ClientSchema = new mongoose.Schema({
   ownerNumber: {
     type: [String],
     required: false
+  },
+  isApproved: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 });
 

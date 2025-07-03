@@ -273,6 +273,35 @@ async getClientsByOwnerNumber(phoneNumber) {
         };
     }
 
+    async createManyClients(clientDataArray) {
+      try {
+        // Validate that the input is a non-empty array
+        if (!Array.isArray(clientDataArray) || clientDataArray.length === 0) {
+          throw new Error("Input must be a non-empty array of client data.");
+        }
+    
+        const now = Date.now(); // Get the current time once for consistency across all leads
+    
+        //  add timestamps 
+        const clientsToInsert = clientDataArray.map(clientDoc => ({
+          ...clientDoc,          
+          createdOn: now,      
+          updatedOn: now,      
+        }));
+    
+        
+        const createdClients = await Lead.insertMany(clientsToInsert, { ordered: false });
+    
+        consoleManager.log(`Successfully created ${createdClients.length} leads.`);
+        return createdClients;
+        
+      } catch (err) {
+        consoleManager.error(`Error creating clients in bulk: ${err.message}`);
+        throw err; // Re-throw the error to be caught by the route handler
+      }
+    }
+
+
 }
 
 export default new ClientService();

@@ -52,7 +52,7 @@ const leadSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['New', 'RegisterationDone', 'CallCut', 'CallNotPickUp', 'NotInterested', 'InvalidNumber'],
-    default: 'Active',
+    default: 'New',
     required: false 
   },
   createdOn: {
