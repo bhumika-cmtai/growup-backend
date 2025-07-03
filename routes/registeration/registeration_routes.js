@@ -71,8 +71,8 @@ router.delete('/deleteRegister/:id', async (req, res) => {
 // Get all register
 router.get('/getAllRegister', async (req, res) => {
   try {
-    const { searchQuery, phoneNumber, leaderCode, status, page = 1, limit = 8 } = req.query;
-    const result = await RegisterationService.getAllRegisters(searchQuery, phoneNumber, leaderCode, status, page, limit);
+    const { name, phoneNumber, leaderCode, status, page = 1, limit = 8 } = req.query;
+    const result = await RegisterationService.getAllRegisters(name, phoneNumber, leaderCode, status, page, limit);
 
     return ResponseManager.sendSuccess(
       res, 
