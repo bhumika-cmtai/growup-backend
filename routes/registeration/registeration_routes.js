@@ -154,4 +154,25 @@ router.post('/getRegistersCountByDate', async (req, res) => {
   }
 });
 
+
+router.get('/getRegisteredCount', async (req, res) => {
+  try {
+    const count = await RegisterationService.getNumberOfRegisters();
+    return ResponseManager.sendSuccess(
+      res,
+      { count },
+      200,
+      'Registered count retrieved successfully'
+    );
+  } catch (err) {
+    consoleManager.error(`Error in /getRegisteredCount route: ${err.message}`);
+    return ResponseManager.sendError(
+      res,
+      500,
+      'INTERNAL_ERROR',
+      'Error fetching registered count'
+    );
+  }
+});
+
 export default router;
