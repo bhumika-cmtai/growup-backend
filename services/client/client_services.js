@@ -264,6 +264,11 @@ async getClientsByOwnerNumber(phoneNumber) {
 
         // 4. Call the UserService to update the incomes
         const updateResult = await UserService.updateIncomesForMultipleUsers(ownerNumbers, commissionShare);
+        await Client.findByIdAndUpdate(clientId, { 
+                $set: { isApproved: true } 
+              });
+    consoleManager.log(`Client ${clientId} marked as approved.`);
+
 
         return {
             message: `Commission of ${totalCommission} distributed among ${ownerNumbers.length} owners.`,
@@ -300,6 +305,7 @@ async getClientsByOwnerNumber(phoneNumber) {
         throw err; // Re-throw the error to be caught by the route handler
       }
     }
+
 
 
 }
