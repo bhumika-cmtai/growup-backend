@@ -132,6 +132,10 @@ user Routes -
 
  /v1/removeUser/:id ?
 
+GET - v1/users/getTotalIncome
+GET - v1/users/getRegisteredCount
+
+
 
 
 lead route - 

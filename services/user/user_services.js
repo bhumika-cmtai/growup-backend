@@ -127,7 +127,7 @@ class UserService {
         // It connects User.leaderCode with Client.leaderCode
         {
           $lookup: {
-            from: "clients", // The collection name in MongoDB (Mongoose pluralizes it)
+            from: "registerations", // The collection name in MongoDB (Mongoose pluralizes it)
             localField: "leaderCode", // Field from the User collection
             foreignField: "leaderCode", // Field from the Client collection
             as: "registeredClients" // The name of the new array field to add
