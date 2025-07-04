@@ -296,7 +296,7 @@ async getClientsByOwnerNumber(phoneNumber) {
         }));
     
         
-        const createdClients = await Lead.insertMany(clientsToInsert, { ordered: false });
+        const createdClients = await Client.insertMany(clientsToInsert, { ordered: false });
     
         consoleManager.log(`Successfully created ${createdClients.length} leads.`);
         return createdClients;

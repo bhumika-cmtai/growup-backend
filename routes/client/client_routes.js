@@ -224,7 +224,7 @@ router.post('/addManyClient', async (req,res)=>{
       return ResponseManager.handleBadRequestError(res, 'Request body must be a non-empty array of client objects.');
     }
 
-    const createdClients = await ClientService.createManyClients(leadsArray);
+    const createdClients = await ClientService.createManyClients(clientArray);
 
     const successMessage = `Successfully processed request. Created ${createdClients.length} of ${clientArray.length} leads.`;
     return ResponseManager.sendSuccess(res, createdClients, 201, successMessage);
