@@ -27,8 +27,8 @@ const LinkClickSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['New', 'RegisterationDone', 'CallCut', 'CallNotPickUp', 'NotInterested', 'InvalidNumber'],
-    default: 'New',
+    enum: ['complete','inComplete'],
+    default: 'complete',
     required: false 
   },
   reason: {

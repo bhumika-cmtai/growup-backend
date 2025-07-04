@@ -1,11 +1,14 @@
 import express from "express"
 import UserService from "../../services/user/user_services.js"
+import ClientService from "../../services/client/client_services.js"
+import LeadService from "../../services/lead/lead_services.js"
 import AppLinkService from "../../services/applink/applink_service.js"
 import ResponseManager from "../../utils/responseManager.js";
 import consoleManager from "../../utils/consoleManager.js";
 import jwt from 'jsonwebtoken';
 import authMiddleware from '../../middleware/authMiddleware.js'; // Import the new middleware
 import User from '../../models/user/userModel.js'; 
+import Lead from "../../models/lead/leadModel.js"
 
 const router = express.Router();
 
@@ -273,6 +276,53 @@ router.get('/getTotalIncome', async (req, res) => {
       'INTERNAL_ERROR',
       'Error fetching total income'
     );
+  }
+});
+
+
+router.delete('/deleteAllData', async (req, res) => {
+  consoleManager.log('Received request to delete all data.');
+  
+  try {
+    // We use Promise.all to execute all deletion/update operations in parallel
+    // for better performance. If any one of them fails, the catch block will be triggered.
+    const [
+      incomeClearResult,
+      clientDeleteResult,
+      leadDeleteResult
+    ] = await Promise.all([
+      UserService.clearAllIncome(),
+      ClientService.deleteAllClients(),
+      LeadService.deleteAllLeads()
+    ]);
+
+    // Construct a summary of the operations
+    const summary = {
+      usersIncomeCleared: incomeClearResult.modifiedCount,
+      clientsDeleted: clientDeleteResult.deletedCount,
+      leadsDeleted: leadDeleteResult.deletedCount,
+    };
+
+    consoleManager.log('Successfully cleared/deleted all data.', summary);
+
+    // Send a success response with the summary
+    res.status(200).json({
+      success: true,
+      message: 'All specified data has been cleared or deleted successfully.',
+      data: summary,
+    });
+
+  } catch (error) {
+    // The service functions already log errors, but we log here as well
+    // to indicate the failure happened at the route level.
+    consoleManager.error(`Error in /deleteAllData route: ${error.message}`);
+
+    // Send a 500 Internal Server Error response
+    res.status(500).json({
+      success: false,
+      message: 'A critical error occurred while clearing data. Check server logs for details.',
+      error: error.message,
+    });
   }
 });
 

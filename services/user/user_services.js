@@ -345,6 +345,21 @@ class UserService {
       }
     }
 
+
+    async clearAllIncome() {
+      try {
+      const result = await User.updateMany(
+        {},
+        { $set: { income: 0 } }
+      );
+      consoleManager.log(`Cleared income for ${result.modifiedCount} users.`);
+      return result;
+      } catch (err) {
+      consoleManager.error(`Error clearing income fields: ${err.message}`);
+      throw err;
+      }
+    }
+
 }
 
 

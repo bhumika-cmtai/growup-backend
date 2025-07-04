@@ -307,7 +307,16 @@ async getClientsByOwnerNumber(phoneNumber) {
       }
     }
 
-
+    async deleteAllClients() {
+      try {
+      const result = await Client.deleteMany({});
+      consoleManager.log(`Deleted ${result.deletedCount} clients.`);
+      return { deletedCount: result.deletedCount };
+      } catch (err) {
+      consoleManager.error(`Error deleting all clients: ${err.message}`);
+      throw err;
+      }
+    }
 
 }
 

@@ -90,6 +90,17 @@ class LeadService {
     }
   }
 
+  async deleteAllLeads() {
+    try {
+      const result = await Lead.deleteMany({});
+      consoleManager.log(`Deleted ${result.deletedCount} leads.`);
+      return result;
+    } catch (err) {
+      consoleManager.error(`Error deleting all leads: ${err.message}`);
+      throw err;
+    }
+  }
+
   async getAllLeads(searchQuery = '',status ,page = 1, limit = 8) {
     try {
       // Build the query object for filtering
