@@ -13,6 +13,10 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
+  transactionId: {
+    type: String,
+    required: false
+  },
   qualification: {
     type: String,
     required: false

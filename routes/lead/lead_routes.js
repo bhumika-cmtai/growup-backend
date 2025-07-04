@@ -186,5 +186,19 @@ router.get('/getLeadsCount', async (req, res) => {
   }
 });
 
+router.get('/getLeadByTransactionId/:transactionId', async (req, res) => {
+  try {
+    const lead = await LeadService.getLeadByTransactionId(req.params.transactionId);
+    if (lead) {
+      return ResponseManager.sendSuccess(res, lead, 200, 'Lead retrieved successfully');
+    } else {
+      return ResponseManager.sendSuccess(res, [], 200, 'Lead not found for transactionId');
+    }
+  } catch (err) {
+    consoleManager.error(`Error in /getLeadByTransactionId route: ${err.message}`);
+    return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error fetching lead by transactionId');
+  }
+});
+
 
 export default router;

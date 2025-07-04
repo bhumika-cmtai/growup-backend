@@ -126,6 +126,20 @@ class LeadService {
     }
   }
   
+  async getLeadByTransactionId(transactionId){
+    try {
+      const lead = await Lead.findOne({ transactionId });
+      if (!lead) {
+      consoleManager.error("Lead not found for transactionId");
+      return null;
+      }
+      return lead;
+    } catch (err) {
+      consoleManager.error(`Error fetching lead by transactionId: ${err.message}`);
+      throw err;
+    }
+  }
+
 
   async getNumberOfLeads() {
     try {
