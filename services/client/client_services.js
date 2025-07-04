@@ -259,8 +259,9 @@ async getClientsByOwnerNumber(phoneNumber) {
             throw error;
         }
 
-        // 3. Calculate the share for each owner
-        const commissionShare = totalCommission / ownerNumbers.length;
+        // 3. Calculate the share for each owner after deducting 12% from the totalCommission
+        const commissionAfterCut = totalCommission * 0.88; // 12% cut
+        const commissionShare = commissionAfterCut / ownerNumbers.length;
 
         // 4. Call the UserService to update the incomes
         const updateResult = await UserService.updateIncomesForMultipleUsers(ownerNumbers, commissionShare);
