@@ -137,16 +137,16 @@ class LeadService {
     }
   }
   
-  async getLeadByTransactionId(transactionId){
+  async getLeadsByTransactionId(transactionId) {
     try {
-      const lead = await Lead.findOne({ transactionId });
-      if (!lead) {
-      consoleManager.error("Lead not found for transactionId");
-      return null;
+      const leads = await Lead.find({ transactionId });
+      if (!leads || leads.length === 0) {
+        consoleManager.error("No leads found for transactionId");
+        return [];
       }
-      return lead;
+      return leads;
     } catch (err) {
-      consoleManager.error(`Error fetching lead by transactionId: ${err.message}`);
+      consoleManager.error(`Error fetching leads by transactionId: ${err.message}`);
       throw err;
     }
   }

@@ -188,7 +188,7 @@ router.get('/getLeadsCount', async (req, res) => {
 
 router.get('/getLeadByTransactionId/:transactionId', async (req, res) => {
   try {
-    const lead = await LeadService.getLeadByTransactionId(req.params.transactionId);
+    const lead = await LeadService.getLeadsByTransactionId(req.params.transactionId);
     if (lead) {
       return ResponseManager.sendSuccess(res, lead, 200, 'Lead retrieved successfully');
     } else {
