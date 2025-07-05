@@ -72,7 +72,7 @@ router.get('/all', async (req, res) => {
   console.log("all link fetch")
     try {
       const allLinks = await LinkService.getAllLinks();
-      console.log(allLinks)
+      // console.log(allLinks)
   
       return ResponseManager.sendSuccess(res, allLinks, 200, 'All links fetched successfully');
   
