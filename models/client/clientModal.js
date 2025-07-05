@@ -28,10 +28,6 @@ const ClientSchema = new mongoose.Schema({
     enum: ['matched' , 'notMatched'],
     default: 'notMatched'
   },
-  leaderCode: {
-    type:String,
-    required:false
-  },
   portalName: {
     type:String,
     required: false
