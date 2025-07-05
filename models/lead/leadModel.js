@@ -43,10 +43,6 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false 
   },
-  message: {
-    type:String,
-    required: false
-  },
   reason: {
     type: String,
     required: false 
