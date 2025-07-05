@@ -19,13 +19,13 @@ const ClientSchema = new mongoose.Schema({
   },
   ekyc_stage: {
     type: String,
-    enum: ['complete','notComplete'],
+    // enum: ['complete','notComplete'],
     default: 'notComplete',
     required: false,
   },
   trade_status: {
     type: String,
-    enum: ['matched' , 'notMatched'],
+    // enum: ['matched' , 'notMatched'],
     default: 'notMatched'
   },
   portalName: {
