@@ -130,13 +130,15 @@ router.get('/getAllUsers', async (req, res) => {
     }
 
     // Format the response as needed
+    // Filter out users with role 'admin'
+    const filteredUsers = result.users.filter(user => user.role !== 'admin');
     return ResponseManager.sendSuccess(
       res, 
       {
-        users: result.users,
-        totalPages: result.totalPages,
-        currentPage: result.currentPage,
-        totalUsers: result.totalUsers
+      users: filteredUsers,
+      totalPages: result.totalPages,
+      currentPage: result.currentPage,
+      totalUsers: filteredUsers.length
       }, 
       200, 
       'Users retrieved successfully'
@@ -243,7 +245,7 @@ router.get('/getUsersCount', async (req, res) => {
 
     return ResponseManager.sendSuccess(
       res, 
-      { count: count }, 
+      { count: count-1 }, 
       200, 
       'Lead count retrieved successfully'
     );

@@ -17,33 +17,9 @@ const leadSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  qualification: {
-    type: String,
+  age: {
+    type: Number,
     required: false
-  },
-  source: {
-    type:String,
-    required: false
-  },
-  portal_name: {
-    type:String,
-    required: false
-  },
-  date_of_birth: {
-    type: String,
-    required: false
-  },
-  ekyc_stage: {
-    type: String,
-    enum: ['complete','notComplete'],
-    default: 'notComplete',
-    required: false,
-  },
-  trade_status: {
-    type: String,
-    enum: ['matched' , 'notMatched'],
-    default: 'notMatched',
-    required: false,
   },
   city: {
     type: String,
@@ -74,18 +50,6 @@ const leadSchema = new mongoose.Schema({
   reason: {
     type: String,
     required: false 
-  },
-  ownerNumber: {
-    type: [String],
-    required: false
-  },
-  ownerName: {
-    type: [String],
-    required: false
-  },
-  leaderCode: {
-    type: String,
-    required: false
   }
 });
 

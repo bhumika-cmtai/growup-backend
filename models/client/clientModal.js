@@ -36,14 +36,6 @@ const ClientSchema = new mongoose.Schema({
     type:String,
     required: false
   },
-  city: {
-    type: String,
-    required: false
-  },
-  age: {
-    type: Number,
-    required: false
-  },
   status: {
     type: String,
     enum: ['New', 'RegisterationDone', 'CallCut', 'CallNotPickUp', 'NotInterested', 'InvalidNumber'],

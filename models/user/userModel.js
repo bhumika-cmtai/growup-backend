@@ -51,18 +51,6 @@ const userSchema = new mongoose.Schema({
     required:false,
     default: 0
   },
-  work_experience: {
-    type: String,
-    required: false
-  },
-  abhi_aap_kya_karte_hai: {
-    type: String,
-    required: false
-  },
-  bio: {
-    type: String,
-    required: false
-  },
   age: {
     type: Number,
     required: false

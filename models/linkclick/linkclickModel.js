@@ -30,10 +30,6 @@ const LinkClickSchema = new mongoose.Schema({
     enum: ['complete','inComplete'],
     default: 'complete',
     required: false 
-  },
-  reason: {
-    type: String,
-    required: false
   }
 });
 
