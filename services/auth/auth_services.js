@@ -37,7 +37,7 @@ class LoginService {
       // If all checks pass, proceed with generating the token for the found user.
       const payload = { id: user._id, role: user.role };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '30d',
+        expiresIn: '30d',
       });
 
       const userResponse = user.toObject();
@@ -100,7 +100,7 @@ class LoginService {
     // Create JWT payload and token
     const payload = { id: user._id, role: user.role, email: user.email, name: user.name };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN || '30d',
+      expiresIn: '30d',
     });
 
     // Prepare a safe user object to return (without the password)
