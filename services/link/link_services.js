@@ -63,6 +63,21 @@ class LinkService {
     }
   }
 
+  async deleteLinkById(id) {
+    try {
+      const deletedLink = await Link.findByIdAndDelete(id);
+      if (deletedLink) {
+        consoleManager.log(`Successfully deleted link with ID: ${id}`);
+      } else {
+        consoleManager.warn(`No link found with ID to delete: ${id}`);
+      }
+      return deletedLink;
+    } catch (err) {
+      consoleManager.error(`Error deleting link with ID ${id}: ${err.message}`);
+      throw err;
+    }
+  }
+
   async getCommissionByPortalName(portalName) {
     try {
       // Find by portalName and select only the commision field

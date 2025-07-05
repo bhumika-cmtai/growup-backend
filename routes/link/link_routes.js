@@ -107,4 +107,21 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedLink = await LinkService.deleteLinkById(id);
+
+    if (!deletedLink) {
+      return ResponseManager.sendError(res, 404, 'NOT_FOUND', `Link with ID '${id}' not found.`);
+    }
+
+    return ResponseManager.sendSuccess(res, deletedLink, 200, 'Link deleted successfully');
+  } catch (err) {
+    consoleManager.error(`Error in /:id delete link route: ${err.message}`);
+    return ResponseManager.sendError(res, 500, 'INTERNAL_SERVER_ERROR', 'Error deleting link.');
+  }
+});
+
+
 export default router;
