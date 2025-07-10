@@ -53,6 +53,7 @@ import registerationRoute from "../routes/registeration/registeration_routes.js"
 import linkclickRoute from "../routes/linkclick/linkclick_routes.js"
 import joinlinkRoute from "../routes/joinlink/joinlink_routes.js"
 import restartDateRoute from "../routes/restartdate/restartdate_routes.js"
+import countRoute from "../routes/count/count_routes.js"
 // const userRoute = require("../routes/user/user_routes");
 // const userRoute = require("../routes/user/user_routes");
 // const roleRoute = require("../routes/role/role_routes");
@@ -72,6 +73,7 @@ app.use("/v1/registers", registerationRoute)
 app.use("/v1/linkclicks", linkclickRoute)
 app.use("/v1/joinlinks", joinlinkRoute)
 app.use("/v1/restartdate",restartDateRoute)
+app.use("/v1/count", countRoute)
 // app.use("/v2/role", roleRoute);
 
 
