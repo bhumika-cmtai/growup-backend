@@ -90,6 +90,17 @@ class LeadService {
     }
   }
 
+  async deleteManyLeads(leadIds) {
+    try {
+      const result = await Lead.deleteMany({ _id: { $in: leadIds } });
+      consoleManager.log(`Deleted ${result.deletedCount} leads.`);
+      return result;
+    } catch (err) { 
+      consoleManager.error(`Error deleting leads: ${err.message}`);
+      throw err;
+    }
+  }
+
   async deleteAllLeads() {
     try {
       const result = await Lead.deleteMany({});

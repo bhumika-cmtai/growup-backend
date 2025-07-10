@@ -68,6 +68,18 @@ router.delete('/deleteClient/:id', async (req, res) => {
   }
 });
 
+router.delete('/deleteManyClients', async (req, res) => {
+  try {
+    const { clientIds } = req.body;
+    const result = await ClientService.deleteManyClients(clientIds);  
+    return ResponseManager.sendSuccess(res, result, 200, 'Clients deleted successfully');
+  } catch (err) {
+    consoleManager.error(`Error in /deleteManyClients route: ${err.message}`);
+    ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error deleting clients');
+  }
+});
+
+
 // Get all client
 router.get('/getAllClient', async (req, res) => {
   try {

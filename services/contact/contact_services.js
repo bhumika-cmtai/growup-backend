@@ -62,6 +62,18 @@ class ContactService {
     }
   }
 
+  async deleteManyContacts(contactIds) {
+    try {
+      const result = await Contact.deleteMany({ _id: { $in: contactIds } });
+      consoleManager.log(`Deleted ${result.deletedCount} contacts.`);
+      return result;
+    } catch (err) {
+      consoleManager.error(`Error deleting contacts: ${err.message}`);
+      throw err;
+    }
+  }
+  
+
   async getAllContacts(searchQuery = '', page = 1, limit = 8) {
     try {
       // Build the query object for filtering

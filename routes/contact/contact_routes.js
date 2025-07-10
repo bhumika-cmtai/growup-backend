@@ -61,6 +61,17 @@ router.delete('/deleteContact/:id', async (req, res) => {
   }
 });
 
+router.delete('/deleteManyContacts', async (req, res) => {
+  try {
+    const { contactIds } = req.body;
+    const result = await ContactService.deleteManyContacts(contactIds);
+    return ResponseManager.sendSuccess(res, result, 200, 'Contacts deleted successfully');
+  } catch (err) { 
+    consoleManager.error(`Error in /deleteManyContacts route: ${err.message}`);
+    ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error deleting contacts');
+  }
+});
+
 // Get all contact
 router.get('/getAllContact', async (req, res) => {
   try {

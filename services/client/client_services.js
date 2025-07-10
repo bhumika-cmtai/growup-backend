@@ -100,6 +100,18 @@ class ClientService {
     }
   }
 
+  async deleteManyClients(clientIds) {
+    try {
+      const result = await Client.deleteMany({ _id: { $in: clientIds } });
+      consoleManager.log(`Deleted ${result.deletedCount} clients.`);
+      return result;
+    } catch (err) { 
+      consoleManager.error(`Error deleting clients: ${err.message}`);
+      throw err;
+    }
+  }
+  
+
  async getAllClients(name='',phoneNumber = '', portalName = '', status, page = 1, limit = 8) {
     try {
       const filterQuery = {};

@@ -69,9 +69,20 @@ class RegisterService {
       consoleManager.error(`Error deleting register: ${err.message}`);
       throw err;
     }
+    }
+
+  async deleteManyRegisters(registerIds) {
+    try {
+      const result = await Register.deleteMany({ _id: { $in: registerIds } });
+      consoleManager.log(`Deleted ${result.deletedCount} registers.`);
+      return result;
+    } catch (err) {
+      consoleManager.error(`Error deleting registers: ${err.message}`);
+      throw err;
+    }
   }
 
- async getAllRegisters(name='',phoneNumber = '', leaderCode='' ,status, page = 1, limit = 8) {
+  async getAllRegisters(name='',phoneNumber = '', leaderCode='' ,status, page = 1, limit = 8) {
     try {
       const filterQuery = {};
       

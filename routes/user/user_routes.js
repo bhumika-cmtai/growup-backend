@@ -118,6 +118,17 @@ router.delete('/deleteUser/:id', async (req, res) => {
   }
 });
 
+router.delete('/deleteManyUsers', async (req, res) => {
+  try {
+    const { userIds } = req.body;
+    const result = await UserService.deleteManyUsers(userIds);
+    return ResponseManager.sendSuccess(res, result, 200, 'Users deleted successfully');
+  } catch (err) {
+    consoleManager.error(`Error in /deleteManyUsers route: ${err.message}`);
+    ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error deleting users');
+  }
+});
+
 // Get all users
 router.get('/getAllUsers', async (req, res) => {
   try {

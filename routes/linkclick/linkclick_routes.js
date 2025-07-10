@@ -67,6 +67,17 @@ router.delete('/deleteLinkclick/:id', async (req, res) => {
   }
 });
 
+router.delete('/deleteManyLinkclicks', async (req, res) => {
+  try {
+    const { linkclickIds } = req.body;
+    const result = await LinkClickService.deleteManyLinkClicks(linkclickIds);
+    return ResponseManager.sendSuccess(res, result, 200, 'Linkclicks deleted successfully');
+  } catch (err) { 
+    consoleManager.error(`Error in /deleteManyLinkclicks route: ${err.message}`);
+    ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error deleting linkclicks');
+  }
+});
+
 // Get all linkclick
 router.get('/getAllLinkclick', async (req, res) => {
   try {

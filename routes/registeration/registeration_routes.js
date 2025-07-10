@@ -68,6 +68,17 @@ router.delete('/deleteRegister/:id', async (req, res) => {
   }
 });
 
+router.delete('/deleteManyRegisters', async (req, res) => {
+  try {
+    const { registerIds } = req.body;
+    const result = await RegisterationService.deleteManyRegisters(registerIds);
+    return ResponseManager.sendSuccess(res, result, 200, 'Registers deleted successfully');
+  } catch (err) { 
+    consoleManager.error(`Error in /deleteManyRegisters route: ${err.message}`);
+    ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error deleting registers');
+  }
+});
+
 // Get all register
 router.get('/getAllRegister', async (req, res) => {
   try {

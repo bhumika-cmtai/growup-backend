@@ -99,6 +99,17 @@ class UserService {
     }
   }
 
+  async deleteManyUsers(userIds) {
+    try {
+      const result = await User.deleteMany({ _id: { $in: userIds } });
+      consoleManager.log(`Deleted ${result.deletedCount} users.`);
+      return result;
+    } catch (err) { 
+      consoleManager.error(`Error deleting users: ${err.message}`);
+      throw err;
+    }
+  } 
+
   async getAllUsers(searchQuery = '', status, page = 1, limit = 8) {
     try {
       const pageNum = parseInt(page, 10);

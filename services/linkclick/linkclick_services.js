@@ -69,9 +69,20 @@ class LinkClickService {
       consoleManager.error(`Error deleting linkClick: ${err.message}`);
       throw err;
     }
-  }
+    }
 
- async getAllLinkClicks(name='',phoneNumber = '', portalName = '',leaderCode='', status, page = 1, limit = 8) {
+  async deleteManyLinkClicks(linkClickIds) {
+    try {
+      const result = await LinkClick.deleteMany({ _id: { $in: linkClickIds } });
+      consoleManager.log(`Deleted ${result.deletedCount} linkClicks.`);
+      return result;
+    } catch (err) {
+      consoleManager.error(`Error deleting linkClicks: ${err.message}`);
+      throw err;
+    }
+  } 
+
+  async getAllLinkClicks(name='',phoneNumber = '', portalName = '',leaderCode='', status, page = 1, limit = 8) {
     try {
       const filterQuery = {};
       
