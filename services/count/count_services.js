@@ -1,7 +1,5 @@
-import Count from "../../models/count/countModel.js";
 import Lead from "../../models/lead/leadModel.js";
 import Client from "../../models/client/clientModal.js"; // Fixed typo in import
-import Transaction from "../../models/transaction/transactionModel.js";
 import User from "../../models/user/userModel.js";
 import LinkClick from "../../models/linkclick/linkclickModel.js";
 import AppLink from "../../models/applink/appLinkModel.js";
@@ -11,12 +9,6 @@ import RestartDate from "../../models/restartdate/restartdateModel.js";
 import Registration from "../../models/registeration/registerationModel.js";
 
 class CountService {
-  async createCount(data) {
-    const count = new Count(data);
-    await count.save();
-    return count;   
-  }
-
   async getAdminStats() {
     try {
       // Count documents for all models
@@ -30,17 +22,7 @@ class CountService {
       const restartDatesCount = await RestartDate.countDocuments();
       const registrationsCount = await Registration.countDocuments();
       
-      // Get transactions data
-      let transactionsCount = 0;
-      let totalAmount = 0;
       
-      try {
-        transactionsCount = await Transaction.countDocuments();
-        const transactions = await Transaction.find();
-        totalAmount = transactions.reduce((sum, transaction) => sum + (transaction.amount || 0), 0);
-      } catch (err) {
-        console.log("Transaction model may not exist:", err.message);
-      }
       
       // User statistics
       const adminCount = await User.countDocuments({ role: "admin" });
@@ -66,8 +48,6 @@ class CountService {
         joinLinks: joinLinksCount,
         restartDates: restartDatesCount,
         registrations: registrationsCount,
-        transactions: transactionsCount,
-        totalAmount,
         
         // Detailed statistics
         userStats: {
