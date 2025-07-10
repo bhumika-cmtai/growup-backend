@@ -69,8 +69,11 @@ router.delete('/deleteLinkclick/:id', async (req, res) => {
 
 router.delete('/deleteManyLinkclicks', async (req, res) => {
   try {
-    const { linkclickIds } = req.body;
-    const result = await LinkClickService.deleteManyLinkClicks(linkclickIds);
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return ResponseManager.handleBadRequestError(res, 'ids array is required');
+    }
+    const result = await LinkClickService.deleteManyLinkClicks(ids);
     return ResponseManager.sendSuccess(res, result, 200, 'Linkclicks deleted successfully');
   } catch (err) { 
     consoleManager.error(`Error in /deleteManyLinkclicks route: ${err.message}`);

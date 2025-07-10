@@ -63,8 +63,11 @@ router.delete('/deleteContact/:id', async (req, res) => {
 
 router.delete('/deleteManyContacts', async (req, res) => {
   try {
-    const { contactIds } = req.body;
-    const result = await ContactService.deleteManyContacts(contactIds);
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return ResponseManager.handleBadRequestError(res, 'ids array is required');
+    }
+    const result = await ContactService.deleteManyContacts(ids);
     return ResponseManager.sendSuccess(res, result, 200, 'Contacts deleted successfully');
   } catch (err) { 
     consoleManager.error(`Error in /deleteManyContacts route: ${err.message}`);

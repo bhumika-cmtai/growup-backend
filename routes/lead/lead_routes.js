@@ -118,8 +118,11 @@ router.delete('/deleteLead/:id', async (req, res) => {
 
 router.delete('/deleteManyLeads', async (req, res) => {
   try {
-    const { leadIds } = req.body;
-    const result = await LeadService.deleteManyLeads(leadIds);
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return ResponseManager.handleBadRequestError(res, 'ids array is required');
+    }
+    const result = await LeadService.deleteManyLeads(ids);
     return ResponseManager.sendSuccess(res, result, 200, 'Leads deleted successfully');
   } catch (err) { 
     consoleManager.error(`Error in /deleteManyLeads route: ${err.message}`);

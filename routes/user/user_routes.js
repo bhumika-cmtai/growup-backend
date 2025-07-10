@@ -120,8 +120,11 @@ router.delete('/deleteUser/:id', async (req, res) => {
 
 router.delete('/deleteManyUsers', async (req, res) => {
   try {
-    const { userIds } = req.body;
-    const result = await UserService.deleteManyUsers(userIds);
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return ResponseManager.handleBadRequestError(res, 'ids array is required');
+    }
+    const result = await UserService.deleteManyUsers(ids);
     return ResponseManager.sendSuccess(res, result, 200, 'Users deleted successfully');
   } catch (err) {
     consoleManager.error(`Error in /deleteManyUsers route: ${err.message}`);

@@ -70,8 +70,11 @@ router.delete('/deleteClient/:id', async (req, res) => {
 
 router.delete('/deleteManyClients', async (req, res) => {
   try {
-    const { clientIds } = req.body;
-    const result = await ClientService.deleteManyClients(clientIds);  
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return ResponseManager.handleBadRequestError(res, 'ids array is required');
+    }
+    const result = await ClientService.deleteManyClients(ids);  
     return ResponseManager.sendSuccess(res, result, 200, 'Clients deleted successfully');
   } catch (err) {
     consoleManager.error(`Error in /deleteManyClients route: ${err.message}`);

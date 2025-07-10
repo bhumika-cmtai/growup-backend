@@ -70,8 +70,11 @@ router.delete('/deleteRegister/:id', async (req, res) => {
 
 router.delete('/deleteManyRegisters', async (req, res) => {
   try {
-    const { registerIds } = req.body;
-    const result = await RegisterationService.deleteManyRegisters(registerIds);
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return ResponseManager.handleBadRequestError(res, 'ids array is required');
+    }
+    const result = await RegisterationService.deleteManyRegisters(ids);
     return ResponseManager.sendSuccess(res, result, 200, 'Registers deleted successfully');
   } catch (err) { 
     consoleManager.error(`Error in /deleteManyRegisters route: ${err.message}`);
