@@ -82,7 +82,7 @@ class RegisterService {
     }
   }
 
-  async getAllRegisters(name='',phoneNumber = '', leaderCode='' ,status, page = 1, limit = 8) {
+  async getAllRegisters(name='',phoneNumber = '', leaderCode='' ,status, page = 1, limit = 15) {
     try {
       const filterQuery = {};
       

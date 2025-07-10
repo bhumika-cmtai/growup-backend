@@ -81,7 +81,7 @@ router.delete('/deleteManyLinkclicks', async (req, res) => {
 // Get all linkclick
 router.get('/getAllLinkclick', async (req, res) => {
   try {
-    const { name, phoneNumber, portalName,leaderCode ,status, page = 1, limit = 8 } = req.query;
+    const { name, phoneNumber, portalName,leaderCode ,status, page = 1, limit = 15 } = req.query;
     const result = await LinkClickService.getAllLinkClicks(name, phoneNumber,portalName, leaderCode,status, page, limit);
 
     return ResponseManager.sendSuccess(

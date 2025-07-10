@@ -75,7 +75,7 @@ router.delete('/deleteManyContacts', async (req, res) => {
 // Get all contact
 router.get('/getAllContact', async (req, res) => {
   try {
-    const { searchQuery, page = 1, limit = 8 } = req.query;
+    const { searchQuery, page = 1, limit = 15 } = req.query;
     const result = await ContactService.getAllContacts(searchQuery, page, limit);
 
     // Format the response as needed

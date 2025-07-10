@@ -112,7 +112,7 @@ class ClientService {
   }
   
 
- async getAllClients(name='',phoneNumber = '', portalName = '', status, page = 1, limit = 8) {
+ async getAllClients(name='',phoneNumber = '', portalName = '', status, page = 1, limit = 15) {
     try {
       const filterQuery = {};
       

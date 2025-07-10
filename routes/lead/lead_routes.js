@@ -130,7 +130,7 @@ router.delete('/deleteManyLeads', async (req, res) => {
 // Get all leads
 router.get('/getAllLeads', async (req, res) => {
   try {
-    const {searchQuery,status ,page = 1, limit = 8 } = req.query;
+    const {searchQuery,status ,page = 1, limit = 15 } = req.query;
     const result = await LeadService.getAllLeads(searchQuery,status, page, limit);
 
     if(result.length==0 || !result){

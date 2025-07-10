@@ -110,7 +110,7 @@ class UserService {
     }
   } 
 
-  async getAllUsers(searchQuery = '', status, page = 1, limit = 8) {
+  async getAllUsers(searchQuery = '', status, page = 1, limit = 15) {
     try {
       const pageNum = parseInt(page, 10);
       const limitNum = parseInt(limit, 10);

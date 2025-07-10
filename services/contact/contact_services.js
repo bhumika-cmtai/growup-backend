@@ -74,7 +74,7 @@ class ContactService {
   }
   
 
-  async getAllContacts(searchQuery = '', page = 1, limit = 8) {
+  async getAllContacts(searchQuery = '', page = 1, limit = 15) {
     try {
       // Build the query object for filtering
       const filterQuery = {};
