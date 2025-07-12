@@ -38,7 +38,7 @@ class AppLinkService {
             if (updatedAppLink) {
                 consoleManager.log(`Successfully updated appLink with ID: ${id}`);
             } else {
-                consoleManager.warn(`No appLink found with ID to update: ${id}`);
+                consoleManager.log(`No appLink found with ID to update: ${id}`);
             }
             return updatedAppLink;
         } catch (err) {
@@ -49,15 +49,16 @@ class AppLinkService {
 // GET LINK BY PASSWORD
     async getLinkByCredentials(appName, password) {
         try {
+            consoleManager.log(`Getting link for appName: ${appName} and password: ${password}`);
             // Directly appName aur password ko database me match karein
-            const applink = await AppLink.findOne({ 
+            const applink = await AppLink.find({ 
               appName: appName, 
-              password: password  // Plain text password comparison
+              password: password
             });
 
             // Agar applink nahi mila, to credentials galat hain
             if (!applink) {
-                consoleManager.warn(`Invalid credentials for appName: ${appName}`);
+                consoleManager.log(`Invalid credentials for appName: ${appName}`);
                 return null;
             }
 
