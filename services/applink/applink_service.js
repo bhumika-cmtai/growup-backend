@@ -49,24 +49,16 @@ class AppLinkService {
 // GET LINK BY PASSWORD
     async getLinkByCredentials(appName, password) {
         try {
-            consoleManager.log(`Getting link for appName: ${appName} and password: ${password}`);
-            // Directly appName aur password ko database me match karein
-            const applink = await AppLink.find({ 
-              appName: appName, 
-              password: password
-            });
-
-            // Agar applink nahi mila, to credentials galat hain
+            const allLinks = await AppLink.find({}).lean();
+            const applink = allLinks.find(link =>
+              link.appName.trim().toLowerCase() === appName.trim().toLowerCase() &&
+              link.password.trim() === password.trim()
+            );
             if (!applink) {
-                consoleManager.log(`Invalid credentials for appName: ${appName}`);
-                return null;
+              return null;
             }
-
-            consoleManager.log(`Successfully authenticated and found link for: ${appName}`);
-            // Sirf link return karein
-            return { link: applink.link };
+            return {link: applink.link};
         } catch (err) {
-            consoleManager.error(`Error authenticating applink ${appName}: ${err.message}`);
             throw err;
         }
     }
