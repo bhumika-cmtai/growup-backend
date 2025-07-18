@@ -17,22 +17,25 @@ class LinkService {
             throw error
         }
     }
+    
     async getLinkByPortalName(portalName) {
-    try {
-      const result = await Link.findOne({ portalName: portalName }).select('link -_id').lean();
-      
-      if (result) {
-        consoleManager.log(`Successfully found link for portal: ${portalName}`);
-      } else {
-        consoleManager.log(`No link found for portal: ${portalName}`);
+      try {
+        // Use regex for partial and case-insensitive match
+        const regex = new RegExp(portalName, 'i');
+        const result = await Link.findOne({ portalName: { $regex: regex } }).select('link -_id').lean();
+        
+        if (result) {
+          consoleManager.log(`Successfully found link for portal (partial/regex match): ${portalName}`);
+        } else {
+          consoleManager.log(`No link found for portal (partial/regex match): ${portalName}`);
+        }
+        
+        return result;
+      } catch (err) {
+        consoleManager.error(`Error fetching link for portal ${portalName} (partial/regex match): ${err.message}`);
+        throw err;
       }
-      
-      return result;
-    } catch (err) {
-      consoleManager.error(`Error fetching link for portal ${portalName}: ${err.message}`);
-      throw err;
     }
-  }
 
   async updateLinkById(id, updateData) {
     try {
