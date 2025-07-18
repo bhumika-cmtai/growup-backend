@@ -30,7 +30,7 @@ class LoginService {
       // Now, validate the user and the provided password against the site password.
       // Use a generic error for security reasons.
       if (!user || password !== siteAppLink.password) {
-        consoleManager.warn(`Login attempt failed for email: ${email}. User not found or incorrect site password provided.`);
+        consoleManager.log(`Login attempt failed for email: ${email}. User not found or incorrect site password provided.`);
         throw new Error(`Invalid credentials`);
       }
 

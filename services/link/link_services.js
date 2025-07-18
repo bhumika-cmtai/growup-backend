@@ -24,7 +24,7 @@ class LinkService {
       if (result) {
         consoleManager.log(`Successfully found link for portal: ${portalName}`);
       } else {
-        consoleManager.warn(`No link found for portal: ${portalName}`);
+        consoleManager.log(`No link found for portal: ${portalName}`);
       }
       
       return result;
@@ -45,7 +45,7 @@ class LinkService {
       if (updatedLink) {
         consoleManager.log(`Successfully updated link with ID: ${id}`);
       } else {
-        consoleManager.warn(`No link found with ID to update: ${id}`);
+        consoleManager.log(`No link found with ID to update: ${id}`);
       }
 
       return updatedLink; 
@@ -69,7 +69,7 @@ class LinkService {
       if (deletedLink) {
         consoleManager.log(`Successfully deleted link with ID: ${id}`);
       } else {
-        consoleManager.warn(`No link found with ID to delete: ${id}`);
+        consoleManager.log(`No link found with ID to delete: ${id}`);
       }
       return deletedLink;
     } catch (err) {
@@ -86,7 +86,7 @@ class LinkService {
       if (result) {
         consoleManager.log(`Successfully found commission for portal: ${portalName}`);
       } else {
-        consoleManager.warn(`No commission found for portal: ${portalName}`);
+        consoleManager.log(`No commission found for portal: ${portalName}`);
       }
       
       return result; // Will return { commission: '...' } or null

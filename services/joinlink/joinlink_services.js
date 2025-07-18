@@ -26,7 +26,7 @@ class JoinlinkService {
             if (updatedJoinlink) {
                 consoleManager.log(`Successfully updated joinlink with ID: ${id}`);
             } else {
-                consoleManager.warn(`No joinlink found with ID to update: ${id}`);
+                consoleManager.log(`No joinlink found with ID to update: ${id}`);
             }
             return updatedJoinlink;
         } catch (err) {
@@ -44,7 +44,7 @@ class JoinlinkService {
 
             // Agar applink nahi mila, to credentials galat hain
             if (!applink) {
-                consoleManager.warn(`Invalid appName: ${appName}`);
+                consoleManager.log(`Invalid appName: ${appName}`);
                 return null;
             }
 
