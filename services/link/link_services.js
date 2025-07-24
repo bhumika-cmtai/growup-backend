@@ -83,8 +83,9 @@ class LinkService {
 
   async getCommissionByPortalName(portalName) {
     try {
-      // Find by portalName and select only the commision field
-      const result = await Link.findOne({ portalName: portalName }).select('commission -_id').lean();
+      // Use regex for case-insensitive match
+      const regex = new RegExp(portalName, 'i');
+      const result = await Link.findOne({ portalName: { $regex: regex } }).select('commission -_id').lean();
       
       if (result) {
         consoleManager.log(`Successfully found commission for portal: ${portalName}`);
@@ -92,7 +93,7 @@ class LinkService {
         consoleManager.log(`No commission found for portal: ${portalName}`);
       }
       
-      return result; // Will return { commission: '...' } or null
+      return result;
     } catch (err) {
       consoleManager.error(`Error fetching commission for portal ${portalName}: ${err.message}`);
       throw err;
