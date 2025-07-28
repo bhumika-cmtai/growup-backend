@@ -110,93 +110,98 @@ class UserService {
     }
   } 
 
-  async getAllUsers(searchQuery = '', status, page = 1, limit = 15) {
-    try {
-      const pageNum = parseInt(page, 10);
-      const limitNum = parseInt(limit, 10);
+  async getAllUsers(searchQuery = '', status, page = 1, limit = 8) {
+  try {
+    const pageNum = parseInt(page , 10);
+    const limitNum = parseInt(limit , 10);
+
+    // 1. Build the initial matching stage (no changes here)
+    const matchStage= {};
+    if (searchQuery) {
+      const regex = { $regex: searchQuery, $options: 'i' };
+      matchStage.$or = [{ name: regex }, { email: regex }];
+    }
+    if (status) {
+      matchStage.status = status;
+    }
+
+    // 2. Main Aggregation Pipeline to get users
+    // --- MODIFICATION: The pipeline is now built conditionally ---
+    const usersPipeline = [
+      // Stage 1: Filter users based on search and status
+      { $match: matchStage },
+      
+      // Stage 2: Perform a "left join" to the 'clients' collection
+      {
+        $lookup: {
+          from: "registerations",
+          localField: "leaderCode",
+          foreignField: "leaderCode",
+          as: "registeredClients"
+        }
+      },
+
+      // Stage 3: Add the new 'registeredClientCount' field
+      {
+        $addFields: {
+          registeredClientCount: { $size: "$registeredClients" }
+        }
+      },
+
+      // Stage 4: Clean up the response
+      {
+        $project: {
+          registeredClients: 0,
+          password: 0
+        }
+      },
+      
+      // Stage 5: Sort results
+      { $sort: { createdOn: -1 } },
+    ];
+    
+    // --- MODIFICATION: Conditionally apply pagination ---
+    // We check if the requested limit is a "normal" number for pagination.
+    // If it's a large number like 10000, we skip these stages to return all documents.
+    const APPLY_PAGINATION_THRESHOLD = 1000; 
+    if (limitNum < APPLY_PAGINATION_THRESHOLD) {
       const skip = (pageNum - 1) * limitNum;
-
-      // 1. Build the initial matching stage (same as your old filterQuery)
-      const matchStage = {};
-      if (searchQuery) {
-        const regex = { $regex: searchQuery, $options: 'i' };
-        matchStage.$or = [
-          { name: regex },
-          { email: regex }
-        ];
-      }
-      if (status) {
-        matchStage.status = status;
-      }
-
-      // 2. Main Aggregation Pipeline to get users with client count
-      const usersPipeline = [
-        // Stage 1: Filter users based on search and status
-        { $match: matchStage },
-        
-        // Stage 2: Perform a "left join" to the 'clients' collection
-        // It connects User.leaderCode with Client.leaderCode
-        {
-          $lookup: {
-            from: "registerations", // The collection name in MongoDB (Mongoose pluralizes it)
-            localField: "leaderCode", // Field from the User collection
-            foreignField: "leaderCode", // Field from the Client collection
-            as: "registeredClients" // The name of the new array field to add
-          }
-        },
-
-        // Stage 3: Add the new 'registeredClientCount' field
-        // We calculate the size of the 'registeredClients' array from the $lookup
-        {
-          $addFields: {
-            registeredClientCount: { $size: "$registeredClients" }
-          }
-        },
-
-        // Stage 4: Clean up the response
-        // Remove the temporary 'registeredClients' array and the sensitive password field
-        {
-          $project: {
-            registeredClients: 0, // Exclude the full client list
-            password: 0 // CRITICAL: Never send the password
-          }
-        },
-        
-        // Stage 5: Sort results (optional, but good for consistency)
-        { $sort: { createdOn: -1 } },
-
-        // Stage 6: Apply pagination
+      usersPipeline.push(
         { $skip: skip },
         { $limit: limitNum }
-      ];
-      
-      // 3. Separate Aggregation to get the total count for pagination
-      const countPipeline = [
-          { $match: matchStage },
-          { $count: 'totalUsers' }
-      ];
-
-      // 4. Execute both pipelines
-      const [users, totalCountResult] = await Promise.all([
-          User.aggregate(usersPipeline),
-          User.aggregate(countPipeline)
-      ]);
-      
-      const totalUsers = totalCountResult.length > 0 ? totalCountResult[0].totalUsers : 0;
-      const totalPages = Math.ceil(totalUsers / limitNum);
-
-      return {
-        users,
-        totalPages,
-        currentPage: pageNum,
-        totalUsers
-      };
-
-    } catch (err) {
-      consoleManager.error(`Error fetching users with client count: ${err.message}`);
-      throw err;
+      );
     }
+    
+    // 3. Separate Aggregation to get the total count for pagination (no changes here)
+    // This pipeline is essential for the frontend to know the total number of records.
+    const countPipeline = [
+        { $match: matchStage },
+        { $count: 'totalUsers' }
+    ];
+
+    // 4. Execute both pipelines (no changes here)
+    const [users, totalCountResult] = await Promise.all([
+        User.aggregate(usersPipeline),
+        User.aggregate(countPipeline)
+    ]);
+    
+    const totalUsers = totalCountResult.length > 0 ? totalCountResult[0].totalUsers : 0;
+    
+    // The totalPages calculation will correctly result in 1 if pagination is not applied.
+    const totalPages = Math.ceil(totalUsers / limitNum);
+
+    return {
+      users,
+      totalPages,
+      currentPage: pageNum,
+      totalUsers
+    };
+
+  } catch (err) {
+    console.error(`Error fetching users with client count: ${err.message}`);
+    throw err;
   }
+}
   
 
   async toggleUserStatus(userId) {
