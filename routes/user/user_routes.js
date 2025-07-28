@@ -135,30 +135,38 @@ router.delete('/deleteManyUsers', async (req, res) => {
 // Get all users
 router.get('/getAllUsers', async (req, res) => {
   try {
-   const { searchQuery, status ,page = 1, limit = 8 } = req.query;
+    const { searchQuery, status, page = 1, limit = 8 } = req.query;
 
-    const result = await UserService.getAllUsers(searchQuery,status , page, limit);
+    const result = await UserService.getAllUsers(searchQuery , status, page , limit);
 
-    if(result.length==0 || !result){
-      return ResponseManager.sendSuccess(res, [], 200, 'No users found');
+    // --- BUG FIX: Check against result.users, not the whole result object ---
+    if (!result || result.users.length === 0) {
+      // Send back the empty result structure so the frontend doesn't crash
+      return ResponseManager.sendSuccess(res, {
+        users: [],
+        totalPages: 0,
+        currentPage: page,
+        totalUsers: 0
+      }, 200, 'No users found');
     }
 
-    // Format the response as needed
     // Filter out users with role 'admin'
     const filteredUsers = result.users.filter(user => user.role !== 'admin');
+
+    // --- BUG FIX: Use the totalUsers count from the service, DO NOT recalculate it ---
     return ResponseManager.sendSuccess(
       res, 
       {
-      users: filteredUsers,
-      totalPages: result.totalPages,
-      currentPage: result.currentPage,
-      totalUsers: filteredUsers.length
+        users: filteredUsers,
+        totalPages: result.totalPages,
+        currentPage: result.currentPage,
+        totalUsers: result.totalUsers // CRITICAL: Use the total count from the service for pagination
       }, 
       200, 
       'Users retrieved successfully'
     );
   } catch (err) {
-    consoleManager.error(`Error fetching users: ${err.message}`);
+    console.error(`Error fetching users: ${err.message}`);
     return ResponseManager.sendError(
       res, 
       500, 
