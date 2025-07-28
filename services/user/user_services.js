@@ -110,13 +110,12 @@ class UserService {
     }
   } 
 
-  async getAllUsers(searchQuery = '', status, page = 1, limit = 15) {
+  async getAllUsers(searchQuery = '', status, page = 1, limit = 15, startDate, endDate) {
   try {
-    const pageNum = parseInt(page , 10);
-    const limitNum = parseInt(limit , 10);
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
 
-    // 1. Build the initial matching stage (no changes here)
-    const matchStage= {};
+    const matchStage = {};
     if (searchQuery) {
       const regex = { $regex: searchQuery, $options: 'i' };
       matchStage.$or = [{ name: regex }, { email: regex }];
@@ -125,44 +124,59 @@ class UserService {
       matchStage.status = status;
     }
 
-    // 2. Main Aggregation Pipeline to get users
-    // --- MODIFICATION: The pipeline is now built conditionally ---
+    const lookupPipeline = [
+      {
+        $match: {
+          $expr: { $eq: ["$leaderCode", "$$leader_code"] }
+        }
+      }
+    ];
+
+    // --- FIX: Implementing the logic from your working date range function ---
+    if (startDate && endDate) {
+      // 1. Create Date objects to establish the time boundaries.
+      const startOfDay = new Date(startDate);
+      startOfDay.setUTCHours(0, 0, 0, 0);
+
+      const endOfDay = new Date(endDate);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+
+      // 2. Get the numeric timestamp from the Date objects.
+      const startTimestamp = startOfDay.getTime();
+      const endTimestamp = endOfDay.getTime();
+
+      // 3. CRITICAL: Convert the numeric timestamps to Strings to match your data schema.
+      // This is the key change that makes the query work.
+      lookupPipeline[0].$match.createdOn = {
+        $gte: String(startTimestamp),
+        $lte: String(endTimestamp)
+      };
+    }
+
     const usersPipeline = [
-      // Stage 1: Filter users based on search and status
       { $match: matchStage },
-      
-      // Stage 2: Perform a "left join" to the 'clients' collection
       {
         $lookup: {
-          from: "registerations",
-          localField: "leaderCode",
-          foreignField: "leaderCode",
-          as: "registeredClients"
+          from: "registerations", // The name of the registrations collection
+          let: { leader_code: "$leaderCode" }, // Define a variable for the user's leaderCode
+          pipeline: lookupPipeline, // The pipeline to run on the registrations collection
+          as: "registeredClients" // The output array field
         }
       },
-
-      // Stage 3: Add the new 'registeredClientCount' field
       {
         $addFields: {
           registeredClientCount: { $size: "$registeredClients" }
         }
       },
-
-      // Stage 4: Clean up the response
       {
         $project: {
           registeredClients: 0,
           password: 0
         }
       },
-      
-      // Stage 5: Sort results
       { $sort: { createdOn: -1 } },
     ];
     
-    // --- MODIFICATION: Conditionally apply pagination ---
-    // We check if the requested limit is a "normal" number for pagination.
-    // If it's a large number like 10000, we skip these stages to return all documents.
     const APPLY_PAGINATION_THRESHOLD = 1000; 
     if (limitNum < APPLY_PAGINATION_THRESHOLD) {
       const skip = (pageNum - 1) * limitNum;
@@ -172,22 +186,17 @@ class UserService {
       );
     }
     
-    // 3. Separate Aggregation to get the total count for pagination (no changes here)
-    // This pipeline is essential for the frontend to know the total number of records.
     const countPipeline = [
         { $match: matchStage },
         { $count: 'totalUsers' }
     ];
 
-    // 4. Execute both pipelines (no changes here)
     const [users, totalCountResult] = await Promise.all([
         User.aggregate(usersPipeline),
         User.aggregate(countPipeline)
     ]);
     
     const totalUsers = totalCountResult.length > 0 ? totalCountResult[0].totalUsers : 0;
-    
-    // The totalPages calculation will correctly result in 1 if pagination is not applied.
     const totalPages = Math.ceil(totalUsers / limitNum);
 
     return {

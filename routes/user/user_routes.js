@@ -135,13 +135,14 @@ router.delete('/deleteManyUsers', async (req, res) => {
 // Get all users
 router.get('/getAllUsers', async (req, res) => {
   try {
-    const { searchQuery, status, page = 1, limit = 15 } = req.query;
+    // --- MODIFICATION: Destructure startDate and endDate from query ---
+    const { searchQuery, status, page = 1, limit = 15, startDate, endDate } = req.query;
 
-    const result = await UserService.getAllUsers(searchQuery, status, page, limit);
+    // --- MODIFICATION: Pass dates to the service method ---
+    const result = await UserService.getAllUsers(searchQuery, status, page, limit, startDate, endDate);
 
-    // --- BUG FIX: Check against result.users, not the whole result object ---
+    // No change from here down, this part is correct.
     if (!result || result.users.length === 0) {
-      // Send back the empty result structure so the frontend doesn't crash
       return ResponseManager.sendSuccess(res, {
         users: [],
         totalPages: 0,
@@ -150,17 +151,15 @@ router.get('/getAllUsers', async (req, res) => {
       }, 200, 'No users found');
     }
 
-    // Filter out users with role 'admin'
     const filteredUsers = result.users.filter(user => user.role !== 'admin');
 
-    // --- BUG FIX: Use the totalUsers count from the service, DO NOT recalculate it ---
     return ResponseManager.sendSuccess(
       res, 
       {
         users: filteredUsers,
         totalPages: result.totalPages,
         currentPage: result.currentPage,
-        totalUsers: result.totalUsers // CRITICAL: Use the total count from the service for pagination
+        totalUsers: result.totalUsers
       }, 
       200, 
       'Users retrieved successfully'
@@ -175,7 +174,6 @@ router.get('/getAllUsers', async (req, res) => {
     );
   }
 });
-
 
 router.get('/getLeaderCode/:leaderCode',async (req, res) => {
 
