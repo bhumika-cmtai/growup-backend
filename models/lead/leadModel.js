@@ -18,7 +18,7 @@ const leadSchema = new mongoose.Schema({
     required: false
   },
   age: {
-    type: Number,
+    type: String,
     required: false
   },
   city: {
