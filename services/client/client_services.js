@@ -112,44 +112,59 @@ class ClientService {
   }
   
 
- async getAllClients(name='',phoneNumber = '', portalName = '', status, page = 1, limit = 15) {
+ async getAllClients(name = '', phoneNumber = '', portalName = '', status, page = 1, limit = 15, exporting = false) {
     try {
-      const filterQuery = {};
-      
-      if (phoneNumber) {
-        filterQuery.phoneNumber = { $regex: `^${phoneNumber}$`, $options: 'i' };
-      }
+        const filterQuery = {};
 
-      if (portalName) {
-        filterQuery.portalName = portalName;
-      }
-  
-      if (status) {
-        filterQuery.status = status;
-      }
-      if (name) {
-        // Use $regex for a "contains" search and $options: 'i' for case-insensitivity
-        filterQuery.name = { $regex: name, $options: 'i' };
-      }
+        if (phoneNumber) {
+            filterQuery.phoneNumber = { $regex: `^${phoneNumber}$`, $options: 'i' };
+        }
 
-      const clients = await Client.find(filterQuery)
-        .limit(parseInt(limit, 10))
-        .skip((parseInt(page, 10) - 1) * parseInt(limit, 10));
-  
-      const totalClients = await Client.countDocuments(filterQuery);
-      const totalPages = Math.ceil(totalClients / limit);
-  
-      return {
-        clients, 
-        totalPages, 
-        currentPage: parseInt(page, 10), 
-        totalClients
-      };
+        if (portalName && portalName !== 'all') { // Ensure 'all' doesn't filter
+            filterQuery.portalName = portalName;
+        }
+
+        if (status && status !== 'all') { // Ensure 'all' doesn't filter
+            filterQuery.status = status;
+        }
+        if (name) {
+            filterQuery.name = { $regex: name, $options: 'i' };
+        }
+
+        // If 'exporting' is true, we don't apply limit and skip
+        if (exporting) {
+            const clients = await Client.find(filterQuery).sort({ createdOn: -1 }); // Get all matching clients
+            return {
+                clients,
+                totalPages: 1,
+                currentPage: 1,
+                totalClients: clients.length
+            };
+        }
+
+        // --- Original Pagination Logic for UI display ---
+        const limitNum = parseInt(limit, 10);
+        const pageNum = parseInt(page, 10);
+
+        const clients = await Client.find(filterQuery)
+            .sort({ createdOn: -1 }) // Added sorting for consistency
+            .limit(limitNum)
+            .skip((pageNum - 1) * limitNum);
+
+        const totalClients = await Client.countDocuments(filterQuery);
+        const totalPages = Math.ceil(totalClients / limitNum);
+
+        return {
+            clients,
+            totalPages,
+            currentPage: pageNum,
+            totalClients
+        };
     } catch (err) {
-      consoleManager.error(`Error fetching clients: ${err.message}`);
-      throw err;
+        consoleManager.error(`Error fetching clients: ${err.message}`);
+        throw err;
     }
-  }
+}
   
   async getAllPortalNames() {
     try {

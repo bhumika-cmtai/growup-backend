@@ -83,27 +83,45 @@ router.delete('/deleteManyClients', async (req, res) => {
 });
 
 
-// Get all client
 router.get('/getAllClient', async (req, res) => {
-  try {
-    const { searchQuery, phoneNumber, portalName, status, page = 1, limit = 15 } = req.query;
-    const result = await ClientService.getAllClients(searchQuery, phoneNumber, portalName, status, page, limit);
+    try {
+        const {
+            searchQuery,
+            phoneNumber,
+            portalName,
+            status,
+            page = 1,
+            limit = 15,
+            export: exportData // Use 'export' as the query param, renamed to 'exportData' to avoid keyword conflict
+        } = req.query;
 
-    return ResponseManager.sendSuccess(
-      res, 
-      {
-        clients: result.clients,
-        totalPages: result.totalPages,
-        currentPage: result.currentPage,
-        totalClients: result.totalClients
-      }, 
-      200, 
-      'client retrieved successfully'
-    );
-  } catch (err) {
-    consoleManager.error(`Error fetching client: ${err.message}`);
-    return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error fetching client');
-  }
+        // Convert the export flag to a boolean
+        const isExporting = exportData === 'true';
+
+        const result = await ClientService.getAllClients(
+            searchQuery,
+            phoneNumber,
+            portalName,
+            status,
+            page,
+            limit,
+            isExporting // Pass the boolean flag to the service
+        );
+
+        return ResponseManager.sendSuccess(
+            res, {
+                clients: result.clients,
+                totalPages: result.totalPages,
+                currentPage: result.currentPage,
+                totalClients: result.totalClients
+            },
+            200,
+            'client retrieved successfully'
+        );
+    } catch (err) {
+        consoleManager.error(`Error fetching client: ${err.message}`);
+        return ResponseManager.sendError(res, 500, 'INTERNAL_ERROR', 'Error fetching client');
+    }
 });
 
 // NEW: Route to get portal names
