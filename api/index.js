@@ -1,16 +1,9 @@
-import express from "express"
-import cors from "cors"
-import dotenv from "dotenv"
-import connectDB from "../database/db.js"
-import consoleManager from "../utils/consoleManager.js"
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "../database/db.js";
+import consoleManager from "../utils/consoleManager.js";
 // import cookieParser from "cookie-parser.js"
-
-// const express = require("express");
-// const cors = require("cors");
-// const dotenv = require("dotenv");
-// const connectDB = require("../database/db");
-// const consoleManager = require("../utils/consoleManager");
-// const cookieParser = require("cookie-parser");
 
 dotenv.config();
 const app = express();
@@ -34,13 +27,24 @@ app.use(
   })
 );
 
-// Middleware
-app.use(express.json());
+// ====================================================================
+// START OF CHANGES: Increase request body size limit
+// ====================================================================
+
+// Middleware to parse JSON with an increased limit
+app.use(express.json({ limit: '4mb' }));
+
+// Middleware to parse URL-encoded data with an increased limit
+app.use(express.urlencoded({ limit: '4mb', extended: true }));
+
+// ====================================================================
+// END OF CHANGES
+// ====================================================================
+
+
 // app.use(cookieParser());
 
 // Import routes
-// const loginRoute = require("../routes/auth/login");
-// const profileRoute = require("../routes/auth/profile");
 import userRoute from "../routes/user/user_routes.js"
 import leadRoute from "../routes/lead/lead_routes.js"
 import contactRoute from "../routes/contact/contact_routes.js"
@@ -54,13 +58,8 @@ import linkclickRoute from "../routes/linkclick/linkclick_routes.js"
 import joinlinkRoute from "../routes/joinlink/joinlink_routes.js"
 import restartDateRoute from "../routes/restartdate/restartdate_routes.js"
 import countRoute from "../routes/count/count_routes.js"
-// const userRoute = require("../routes/user/user_routes");
-// const userRoute = require("../routes/user/user_routes");
-// const roleRoute = require("../routes/role/role_routes");
 
-
-// app.use("/v2/auth", loginRoute);
-// app.use("/v2/get", profileRoute);
+// Use routes
 app.use("/v1/users", userRoute);
 app.use("/v1/leads", leadRoute);
 app.use("/v1/contacts", contactRoute);
@@ -74,7 +73,6 @@ app.use("/v1/linkclicks", linkclickRoute)
 app.use("/v1/joinlinks", joinlinkRoute)
 app.use("/v1/restartdate",restartDateRoute)
 app.use("/v1/count", countRoute)
-// app.use("/v2/role", roleRoute);
 
 
 // Error handling middleware
@@ -84,10 +82,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  //consoleManger changed to console.log for now
   console.log(`Server is running on port ${PORT}`);
 });
 
