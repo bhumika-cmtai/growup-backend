@@ -15,17 +15,37 @@ connectDB().catch((error) => {
 });
 
 // CORS Configuration for credentialed requests
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow all origins for development
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // Allow all origins for development
+//       callback(null, true);
+//     },
+//     methods: "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+//     allowedHeaders: "Content-Type,Authorization",
+//     credentials: true, // Allow credentials (cookies, HTTP authentication)
+//   })
+// );
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = ['http://localhost:3000', 'https://ingrowup.in', 'https://www.ingrowup.in', 'https://ingrowup.in'];
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
-    },
-    methods: "GET,POST,PUT,PATCH,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type,Authorization",
-    credentials: true, // Allow credentials (cookies, HTTP authentication)
-  })
-);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  exposedHeaders: ['Set-Cookie'],
+  maxAge: 600 // Cache preflight request for 10 minutes
+};
+
+app.use(cors(corsOptions));
+// app.use(cors())
 
 // ====================================================================
 // START OF CHANGES: Increase request body size limit
